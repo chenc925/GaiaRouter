@@ -1,0 +1,41 @@
+# OpenRouter 项目依赖
+
+# Web框架
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic>=2.9.0
+pydantic-settings>=2.5.0
+
+# 数据库
+sqlalchemy==2.0.23
+alembic==1.12.1
+pymysql==1.1.0
+psycopg2-binary>=2.9.9
+
+# HTTP客户端
+httpx==0.25.2
+aiohttp==3.9.1
+
+# 配置管理
+pyyaml==6.0.1
+python-dotenv==1.0.0
+
+# 日志
+structlog==23.2.0
+
+# 加密和安全
+cryptography==41.0.7
+bcrypt==4.1.1
+PyJWT==2.8.0
+
+# 工具
+python-dateutil==2.8.2
+
+# 开发工具
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+

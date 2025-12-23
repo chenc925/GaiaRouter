@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gaiarouter-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=gaiarouter
+      - DB_PASSWORD=gaiarouter123
+      - DB_NAME=gaiarouter
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./config.yaml:/app/config.yaml
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - gaiarouter-network
+
+  db:
+    image: mysql:8.0
+    container_name: gaiarouter-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=gaiarouter
+      - MYSQL_USER=gaiarouter
+      - MYSQL_PASSWORD=gaiarouter123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - gaiarouter-network
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  gaiarouter-network:
+    driver: bridge

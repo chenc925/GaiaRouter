@@ -1,17 +1,19 @@
-# OpenRouter 部署指南
+# GaiaRouter 部署指南
 
 ## 概述
 
-本文档提供OpenRouter系统的详细部署指南，包括不同环境的部署方式。
+本文档提供 GaiaRouter 系统的详细部署指南，包括不同环境的部署方式。
 
 ## 目录
 
 1. [部署前准备](#部署前准备)
 2. [开发环境部署](#开发环境部署)
 3. [生产环境部署](#生产环境部署)
-4. [Docker部署](#docker部署)
-5. [Kubernetes部署](#kubernetes部署)
+4. [Docker 部署](#docker部署)
+5. [Kubernetes 部署](#kubernetes部署)
 6. [配置说明](#配置说明)
+7. [健康检查](#健康检查)
+8. [故障排查](#故障排查)
 
 ## 部署前准备
 
@@ -19,23 +21,25 @@
 
 - **操作系统**：Linux、macOS、Windows
 - **Python**：3.9+ 或 **Node.js**：18+
-- **内存**：至少2GB
-- **磁盘**：至少10GB可用空间
+- **内存**：至少 2GB
+- **磁盘**：至少 10GB 可用空间
 - **网络**：稳定的互联网连接
 
-### 获取API Key
+### 获取 API Key
 
 1. **OpenAI API Key**
+
    - 访问 https://platform.openai.com/api-keys
-   - 创建新的API Key
+   - 创建新的 API Key
 
 2. **Anthropic API Key**
+
    - 访问 https://console.anthropic.com/
-   - 创建新的API Key
+   - 创建新的 API Key
 
 3. **Google API Key**
    - 访问 https://console.cloud.google.com/
-   - 创建新的API Key
+   - 创建新的 API Key
 
 ## 开发环境部署
 
@@ -104,7 +108,7 @@ curl http://localhost:8000/v1/models
 
 ## 生产环境部署
 
-### 方式1：直接部署
+### 方式 1：直接部署
 
 #### 1. 准备服务器
 
@@ -157,13 +161,13 @@ LOG_LEVEL=INFO
 REQUEST_TIMEOUT=60
 ```
 
-#### 5. 创建systemd服务
+#### 5. 创建 systemd 服务
 
-创建 `/etc/systemd/system/openrouter.service`：
+创建 `/etc/systemd/system/gaiarouter.service`：
 
 ```ini
 [Unit]
-Description=OpenRouter Service
+Description=GaiaRouter Service
 After=network.target
 
 [Service]
@@ -188,22 +192,22 @@ sudo chown -R openrouter:openrouter /opt/openrouter
 
 # 启动服务
 sudo systemctl daemon-reload
-sudo systemctl enable openrouter
+sudo systemctl enable gaiarouter
 sudo systemctl start openrouter
 
 # 查看状态
 sudo systemctl status openrouter
 ```
 
-### 方式2：使用Nginx反向代理
+### 方式 2：使用 Nginx 反向代理
 
-#### 1. 安装Nginx
+#### 1. 安装 Nginx
 
 ```bash
 sudo apt install nginx -y
 ```
 
-#### 2. 配置Nginx
+#### 2. 配置 Nginx
 
 创建 `/etc/nginx/sites-available/openrouter`：
 
@@ -230,21 +234,21 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-#### 4. 配置HTTPS（可选）
+#### 4. 配置 HTTPS（可选）
 
-使用Let's Encrypt：
+使用 Let's Encrypt：
 
 ```bash
 sudo apt install certbot python3-certbot-nginx -y
 sudo certbot --nginx -d your-domain.com
 ```
 
-## Docker部署
+## Docker 部署
 
 ### 1. 构建镜像
 
 ```bash
-docker build -t openrouter:latest .
+docker build -t gaiarouter:latest .
 ```
 
 ### 2. 运行容器
@@ -261,12 +265,12 @@ docker run -d \
   openrouter:latest
 ```
 
-### 3. 使用Docker Compose
+### 3. 使用 Docker Compose
 
 创建 `docker-compose.yml`：
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   openrouter:
@@ -296,9 +300,9 @@ services:
 docker-compose up -d
 ```
 
-## Kubernetes部署
+## Kubernetes 部署
 
-### 1. 创建ConfigMap
+### 1. 创建 ConfigMap
 
 ```yaml
 apiVersion: v1
@@ -311,7 +315,7 @@ data:
   REQUEST_TIMEOUT: "60"
 ```
 
-### 2. 创建Secret
+### 2. 创建 Secret
 
 ```yaml
 apiVersion: v1
@@ -325,7 +329,7 @@ stringData:
   GOOGLE_API_KEY: your-google-key
 ```
 
-### 3. 创建Deployment
+### 3. 创建 Deployment
 
 ```yaml
 apiVersion: apps/v1
@@ -343,50 +347,50 @@ spec:
         app: openrouter
     spec:
       containers:
-      - name: openrouter
-        image: openrouter:latest
-        ports:
-        - containerPort: 8000
-        envFrom:
-        - configMapRef:
-            name: openrouter-config
-        - secretRef:
-            name: openrouter-secrets
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "250m"
-          limits:
-            memory: "1Gi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: openrouter
+          image: openrouter:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: openrouter-config
+            - secretRef:
+                name: openrouter-secrets
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
 ```
 
-### 4. 创建Service
+### 4. 创建 Service
 
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: openrouter-service
+  name: gaiarouter-service
 spec:
   selector:
     app: openrouter
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8000
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
   type: LoadBalancer
 ```
 
@@ -403,16 +407,16 @@ kubectl apply -f service.yaml
 
 ### 环境变量
 
-| 变量名 | 说明 | 默认值 | 必需 |
-|--------|------|--------|------|
-| `OPENAI_API_KEY` | OpenAI API Key | - | 是（如使用） |
-| `ANTHROPIC_API_KEY` | Anthropic API Key | - | 是（如使用） |
-| `GOOGLE_API_KEY` | Google API Key | - | 是（如使用） |
-| `PORT` | 服务端口 | 8000 | 否 |
-| `HOST` | 服务主机 | 0.0.0.0 | 否 |
-| `LOG_LEVEL` | 日志级别 | INFO | 否 |
-| `REQUEST_TIMEOUT` | 请求超时（秒） | 60 | 否 |
-| `MAX_RETRIES` | 最大重试次数 | 3 | 否 |
+| 变量名              | 说明              | 默认值  | 必需         |
+| ------------------- | ----------------- | ------- | ------------ |
+| `OPENAI_API_KEY`    | OpenAI API Key    | -       | 是（如使用） |
+| `ANTHROPIC_API_KEY` | Anthropic API Key | -       | 是（如使用） |
+| `GOOGLE_API_KEY`    | Google API Key    | -       | 是（如使用） |
+| `PORT`              | 服务端口          | 8000    | 否           |
+| `HOST`              | 服务主机          | 0.0.0.0 | 否           |
+| `LOG_LEVEL`         | 日志级别          | INFO    | 否           |
+| `REQUEST_TIMEOUT`   | 请求超时（秒）    | 60      | 否           |
+| `MAX_RETRIES`       | 最大重试次数      | 3       | 否           |
 
 ### 配置文件
 
@@ -433,7 +437,7 @@ server:
 
 logging:
   level: INFO
-  file: logs/openrouter.log
+  file: logs/gaiarouter.log
 
 timeouts:
   request: 60
@@ -449,8 +453,9 @@ curl http://localhost:8000/health
 ```
 
 预期响应：
+
 ```json
-{"status": "healthy"}
+{ "status": "healthy" }
 ```
 
 ### 2. 模型列表
@@ -478,9 +483,9 @@ curl -X POST http://localhost:8000/v1/chat/completions \
 2. 检查环境变量是否正确
 3. 查看日志文件
 
-### API请求失败
+### API 请求失败
 
-1. 检查API Key是否有效
+1. 检查 API Key 是否有效
 2. 检查网络连接
 3. 查看错误日志
 
@@ -492,16 +497,15 @@ curl -X POST http://localhost:8000/v1/chat/completions \
 
 ## 监控建议
 
-- 使用Prometheus收集指标
-- 使用Grafana可视化
+- 使用 Prometheus 收集指标
+- 使用 Grafana 可视化
 - 配置告警规则
 - 定期检查日志
 
 ## 安全建议
 
-1. 使用HTTPS（生产环境）
-2. 限制API访问
+1. 使用 HTTPS（生产环境）
+2. 限制 API 访问
 3. 定期更新依赖
 4. 使用密钥管理服务
 5. 配置防火墙规则
-

@@ -1,110 +1,231 @@
-# SDD 项目目录结构
+# GaiaRouter - AI 模型路由服务
 
-本项目按照**规范驱动开发（Spec-Driven Development，SDD）**标准组织目录结构。
+一个简单版本的 GaiaRouter，提供统一的 API 接口访问多个 AI 模型。
 
-## SDD 核心理念
+## 项目概述
 
-规范驱动开发是一种以结构化功能规范为起点的开发方法，规范被视为事实的来源，代码、测试等都是规范的表达形式。开发流程包括：
+GaiaRouter 是一个 AI 模型路由服务，支持多个 AI 模型提供商（OpenAI、Anthropic、Google、OpenRouter），提供统一的 API 接口，支持流式响应，并提供完整的后台管理功能。
 
-1. **需求定义**：明确功能需求，编写详细的规范文档
-2. **设计规划**：基于规范进行系统设计，制定实现计划
-3. **任务分解**：将设计方案拆解为具体的开发任务
-4. **代码实现**：根据任务进行编码，确保代码与规范一致
-5. **测试验证**：编写测试用例，验证实现是否满足规范要求
+## 技术栈
 
-## 目录说明
+### 后端
 
-### 📁 specs/ - 规范文档目录
+- **Python 3.11+**
+- **FastAPI** - 高性能异步 Web 框架
+- **SQLAlchemy** - ORM 框架
+- **Alembic** - 数据库迁移工具
+- **httpx** - 异步 HTTP 客户端
+- **structlog** - 结构化日志
+- **阿里云 RDS** - 数据库（MySQL/PostgreSQL）
 
-存放规范文档，包括基础规则、变更记录和功能规范：
+### 前端
 
-```
-specs/
-├── base/            # 基础规则和通用规范
-│   ├── coding-standards.md    # 编码规范
-│   ├── architecture.md        # 架构规范
-│   └── ...
-├── changes/         # 变更记录
-│   ├── changelog.md          # 变更日志总览
-│   ├── proposals/            # 变更提案（待审批）
-│   └── history/               # 历史变更记录
-└── features/        # 功能规范（按功能模块组织）
-    ├── feature-001/          # 功能001的规范
-    ├── feature-002/          # 功能002的规范
-    └── ...
-```
+- **Vue 3** - 前端框架（Composition API）
+- **TypeScript** - 类型安全
+- **Vite** - 构建工具
+- **Arco Design Vue** - UI 组件库
+- **Pinia** - 状态管理
+- **Vue Router** - 路由管理
+- **Axios** - HTTP 客户端
+- **ECharts** - 数据可视化
 
-**目录说明**：
+## 功能特性
 
-- **base/**：存放项目的基础规则、编码规范、架构规范等通用规范
-- **changes/**：存放所有规范变更记录，包括变更日志、变更提案和历史记录
-- **features/**：存放具体功能的规范文档，按功能模块组织
+### 核心功能
 
-详细说明请参考 `specs/README.md`
+- ✅ 多模型提供商支持（OpenAI、Anthropic、Google、OpenRouter）
+- ✅ 统一的 API 接口
+- ✅ 流式响应支持（Server-Sent Events）
+- ✅ 请求/响应格式自动转换
+- ✅ 模型路由和注册
 
-### 📁 designs/ - 设计文档目录
+### 管理功能
 
-存放基于规范的设计文档，包括系统架构和模块设计。建议按功能模块组织：
+- ✅ API Key 管理（创建、查询、更新、删除）
+- ✅ 组织管理（创建、查询、更新、删除）
+- ✅ 使用限制管理（月度请求、Token、费用限制）
+- ✅ 权限管理（read、write、admin）
 
-```
-designs/
-├── feature-001/     # 功能001的设计
-├── feature-002/     # 功能002的设计
-└── ...
-```
+### 统计功能
 
-### 📁 tasks/ - 任务分解目录
+- ✅ 请求统计收集
+- ✅ 统计数据存储
+- ✅ 统计查询 API
+- ✅ 数据聚合（按日期、模型、提供商）
+- ✅ 统计可视化界面
 
-存放将设计方案拆解后的具体开发任务，便于跟踪和管理。建议按功能模块组织：
+### 后台管理界面
 
-```
-tasks/
-├── feature-001/     # 功能001的任务
-├── feature-002/     # 功能002的任务
-└── ...
-```
+- ✅ 组织管理界面（CRUD）
+- ✅ API Key 管理界面（CRUD）
+- ✅ 数据统计可视化
+- ✅ 用户认证
 
-### 📁 src/ - 源代码目录
-
-存放源代码，按照功能模块组织，确保代码与规范和设计对应：
+## 项目结构
 
 ```
-src/
-├── feature-001/     # 功能001的实现
-├── feature-002/     # 功能002的实现
-└── ...
+sddDemo/
+├── frontend/              # 前端项目
+│   ├── src/
+│   │   ├── api/          # API接口封装
+│   │   ├── components/   # 公共组件
+│   │   ├── views/        # 页面组件
+│   │   ├── stores/       # Pinia状态管理
+│   │   ├── router/       # 路由配置
+│   │   └── utils/        # 工具函数
+│   └── package.json
+├── src/gaiarouter/        # 后端项目
+│   ├── api/              # API层
+│   ├── auth/             # 认证模块
+│   ├── organizations/    # 组织管理模块
+│   ├── stats/            # 统计模块
+│   ├── providers/        # 提供商层
+│   ├── adapters/         # 适配器层
+│   ├── router/           # 路由层
+│   ├── database/         # 数据库模块
+│   └── main.py           # 应用入口
+├── docs/                 # 文档
+├── specs/                # 规范文档
+├── designs/              # 设计文档
+├── tasks/                # 任务分解
+├── alembic/              # 数据库迁移
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
 ```
 
-### 📁 tests/ - 测试目录
+## 快速开始
 
-存放测试代码，确保每个功能的实现符合规范要求。建议按功能模块组织：
+### 环境要求
 
+- Python 3.11+
+- Node.js 18+
+- MySQL 8.0+ 或 PostgreSQL 13+
+
+### 后端启动
+
+```bash
+# 安装依赖
+pip install -r requirements.txt
+
+# 配置环境变量
+cp env.example .env
+# 编辑 .env 文件，设置数据库和API Key
+# 详细配置说明请参考 ENV_SETUP.md
+# 注意：.env 文件包含敏感信息，不要提交到版本控制
+
+# 运行数据库迁移
+alembic upgrade head
+
+# 启动服务
+uvicorn src.gaiarouter.main:app --reload
 ```
-tests/
-├── feature-001/     # 功能001的测试
-├── feature-002/     # 功能002的测试
-└── ...
+
+### 前端启动
+
+```bash
+cd frontend
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
 ```
 
-### 📁 scripts/ - 脚本目录
+### Docker 启动
 
-存放辅助开发和部署的脚本，如自动化工具、构建脚本等。
+```bash
+# 启动所有服务
+docker-compose up -d
 
-## 工作流程
+# 运行数据库迁移
+docker-compose exec api alembic upgrade head
+```
 
-### 规范管理流程
+## API 文档
 
-1. **定义基础规则**：在 `specs/base/` 目录下创建项目的基础规则文档
-2. **编写功能规范**：在 `specs/features/` 目录下为每个功能创建规范文档
-3. **记录变更**：当规范发生变更时，在 `specs/changes/` 目录下记录变更详情
-4. **更新规范**：根据变更记录更新相应的规范文档
+启动后端服务后，访问：
 
-### 开发流程
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
-1. **编写规范**：在 `specs/features/` 目录下创建功能规范文档
-2. **设计规划**：在 `designs/` 目录下基于规范进行设计
-3. **任务分解**：在 `tasks/` 目录下将设计拆解为具体任务
-4. **代码实现**：在 `src/` 目录下按功能模块实现代码
-5. **测试验证**：在 `tests/` 目录下编写测试，验证实现是否符合规范
+详细 API 文档请参考：`docs/api/api-documentation.md`
 
-通过这样的目录结构，可以确保从规范到设计、再到实现和测试的全过程有清晰的文档和代码对应关系，符合 SDD 的核心理念。
+## 前端访问
+
+启动前端服务后，访问：
+
+- 管理后台: http://localhost:3000
+
+使用 API Key 登录后即可使用管理功能。
+
+## 主要 API 端点
+
+### 聊天完成
+
+- `POST /v1/chat/completions` - 聊天完成（支持流式）
+
+### 模型
+
+- `GET /v1/models` - 模型列表
+
+### API Key 管理
+
+- `POST /v1/api-keys` - 创建 API Key
+- `GET /v1/api-keys` - 查询 API Key 列表
+- `GET /v1/api-keys/{key_id}` - 查询单个 API Key
+- `PATCH /v1/api-keys/{key_id}` - 更新 API Key
+- `DELETE /v1/api-keys/{key_id}` - 删除 API Key
+
+### 组织管理
+
+- `POST /v1/organizations` - 创建组织
+- `GET /v1/organizations` - 查询组织列表
+- `GET /v1/organizations/{org_id}` - 查询单个组织
+- `PATCH /v1/organizations/{org_id}` - 更新组织
+- `DELETE /v1/organizations/{org_id}` - 删除组织
+
+### 统计
+
+- `GET /v1/api-keys/{key_id}/stats` - API Key 统计
+- `GET /v1/organizations/{org_id}/stats` - 组织统计
+- `GET /v1/stats` - 全局统计
+
+## 文档
+
+- [API 文档](docs/api/api-documentation.md)
+- [部署指南](docs/deployment/deployment-guide.md)
+- [Docker 部署](docs/deployment/docker-deployment.md)
+- [用户指南](docs/user-guide/user-guide.md)
+- [测试计划](docs/test-plan/test-plan.md)
+- [维护手册](docs/maintenance/maintenance-manual.md)
+- [前端设计](designs/openrouter/frontend-design.md)
+
+## 开发规范
+
+本项目遵循 SDD（Spec-Driven Development）规范驱动开发：
+
+- **规范文档**：`specs/` - 功能规范和需求
+- **设计文档**：`designs/` - 架构和模块设计
+- **任务分解**：`tasks/` - 开发任务分解
+
+详细规范请参考：
+
+- [编码规范](specs/base/coding-standards.md)
+- [变更日志](specs/changes/changelog.md)
+
+## 代码统计
+
+- **后端文件数**: 52 个 Python 文件
+- **前端文件数**: 27 个文件
+- **代码行数**: 约 8000+ 行
+- **完成度**: 100%
+
+## 许可证
+
+MIT License
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request！

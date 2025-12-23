@@ -1,4 +1,4 @@
-# OpenRouter 模块设计
+# GaiaRouter 模块设计
 
 ## 模块划分
 
@@ -516,6 +516,176 @@ class StatsQuery:
     - 格式化响应
 ```
 
+## 前端模块设计
+
+### 前端项目结构
+
+```
+frontend/
+├── src/
+│   ├── api/              # API 接口封装
+│   │   ├── organizations.ts
+│   │   ├── apiKeys.ts
+│   │   ├── stats.ts
+│   │   └── index.ts
+│   ├── components/       # 公共组件
+│   │   ├── Layout/
+│   │   ├── Table/
+│   │   ├── Form/
+│   │   └── Chart/
+│   ├── views/           # 页面组件
+│   │   ├── Dashboard/
+│   │   ├── Organizations/
+│   │   ├── ApiKeys/
+│   │   └── Stats/
+│   ├── stores/          # Pinia 状态管理
+│   │   ├── auth.ts
+│   │   ├── organizations.ts
+│   │   ├── apiKeys.ts
+│   │   └── stats.ts
+│   ├── router/          # 路由配置
+│   │   └── index.ts
+│   ├── utils/           # 工具函数
+│   │   ├── request.ts   # Axios 封装
+│   │   ├── format.ts    # 格式化工具
+│   │   └── validate.ts  # 验证工具
+│   ├── App.vue
+│   └── main.ts
+├── public/
+├── package.json
+├── vite.config.ts
+└── tsconfig.json
+```
+
+### 核心模块说明
+
+#### 1. API 接口封装（api/）
+
+**organizations.ts**
+
+```typescript
+// 组织管理 API
+export const getOrganizations = (params) => Promise;
+export const getOrganization = (id) => Promise;
+export const createOrganization = (data) => Promise;
+export const updateOrganization = (id, data) => Promise;
+export const deleteOrganization = (id) => Promise;
+export const getOrganizationStats = (id, params) => Promise;
+```
+
+**apiKeys.ts**
+
+```typescript
+// API Key 管理 API
+export const getApiKeys = (params) => Promise;
+export const getApiKey = (id) => Promise;
+export const createApiKey = (data) => Promise;
+export const updateApiKey = (id, data) => Promise;
+export const deleteApiKey = (id) => Promise;
+export const getApiKeyStats = (id, params) => Promise;
+```
+
+**stats.ts**
+
+```typescript
+// 统计 API
+export const getGlobalStats = (params) => Promise;
+export const getOrganizationStats = (id, params) => Promise;
+export const getApiKeyStats = (id, params) => Promise;
+```
+
+#### 2. 状态管理（stores/）
+
+**organizations.ts**
+
+```typescript
+export const useOrganizationStore = defineStore('organizations', {
+  state: () => ({
+    organizations: [],
+    currentOrganization: null,
+    loading: false
+  }),
+  actions: {
+    fetchOrganizations(),
+    fetchOrganization(id),
+    createOrganization(data),
+    updateOrganization(id, data),
+    deleteOrganization(id)
+  }
+})
+```
+
+**apiKeys.ts**
+
+```typescript
+export const useApiKeyStore = defineStore('apiKeys', {
+  state: () => ({
+    apiKeys: [],
+    currentApiKey: null,
+    loading: false
+  }),
+  actions: {
+    fetchApiKeys(params),
+    fetchApiKey(id),
+    createApiKey(data),
+    updateApiKey(id, data),
+    deleteApiKey(id)
+  }
+})
+```
+
+**stats.ts**
+
+```typescript
+export const useStatsStore = defineStore('stats', {
+  state: () => ({
+    globalStats: null,
+    organizationStats: {},
+    apiKeyStats: {},
+    loading: false
+  }),
+  actions: {
+    fetchGlobalStats(params),
+    fetchOrganizationStats(id, params),
+    fetchApiKeyStats(id, params)
+  }
+})
+```
+
+#### 3. 页面组件（views/）
+
+**Organizations/**
+
+- `List.vue` - 组织列表
+- `Detail.vue` - 组织详情
+- `Form.vue` - 组织表单（创建/编辑）
+
+**ApiKeys/**
+
+- `List.vue` - API Key 列表
+- `Detail.vue` - API Key 详情
+- `Form.vue` - API Key 表单（创建/编辑）
+
+**Stats/**
+
+- `Dashboard.vue` - 统计概览
+- `OrganizationStats.vue` - 组织统计
+- `ApiKeyStats.vue` - API Key 统计
+
+#### 4. 公共组件（components/）
+
+**Layout/**
+
+- `MainLayout.vue` - 主布局（顶部导航 + 侧边栏 + 内容区）
+- `Header.vue` - 顶部导航栏
+- `Sidebar.vue` - 侧边栏菜单
+
+**Chart/**
+
+- `LineChart.vue` - 折线图（时间趋势）
+- `BarChart.vue` - 柱状图（分布统计）
+- `PieChart.vue` - 饼图（占比统计）
+
 ## 模块间依赖关系
 
 ```
@@ -528,6 +698,11 @@ api/middleware → auth/api_key_manager
 router/ → config/
 providers/ → config/
 stats/collector → stats/storage
+
+前端模块：
+views/ → stores/ → api/ → 后端 API
+components/ → views/
+utils/ → 所有模块
 ```
 
 ## 接口设计

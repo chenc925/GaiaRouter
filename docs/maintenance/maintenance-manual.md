@@ -1,8 +1,8 @@
-# OpenRouter 维护手册
+# GaiaRouter 维护手册
 
 ## 概述
 
-本文档为运维人员提供OpenRouter系统的维护和故障排除指导。
+本文档为运维人员提供 GaiaRouter 系统的维护和故障排除指导。
 
 ## 目录
 
@@ -18,33 +18,34 @@
 
 ### 系统组件
 
-- **API服务**：提供RESTful API接口
+- **API 服务**：提供 RESTful API 接口
 - **路由服务**：处理模型路由逻辑
 - **适配器服务**：处理请求/响应转换
-- **提供商服务**：与外部API通信
+- **提供商服务**：与外部 API 通信
 
 ### 技术栈
 
 - **语言**：Python 3.9+ 或 Node.js 18+
 - **框架**：FastAPI（Python）或 Express（Node.js）
-- **HTTP客户端**：httpx/aiohttp（Python）或 axios（Node.js）
+- **HTTP 客户端**：httpx/aiohttp（Python）或 axios（Node.js）
 
 ### 依赖服务
 
-- 外部AI模型API（OpenAI、Anthropic、Google等）
+- 外部 AI 模型 API（OpenAI、Anthropic、Google 等）
 
 ## 部署指南
 
 ### 系统要求
 
-- **CPU**：2核心以上
-- **内存**：2GB以上
-- **磁盘**：10GB以上
+- **CPU**：2 核心以上
+- **内存**：2GB 以上
+- **磁盘**：10GB 以上
 - **网络**：稳定的互联网连接
 
 ### 部署步骤
 
 1. **准备环境**
+
 ```bash
 # 安装Python 3.9+
 python3 --version
@@ -54,6 +55,7 @@ node --version
 ```
 
 2. **安装依赖**
+
 ```bash
 # Python
 pip install -r requirements.txt
@@ -63,6 +65,7 @@ npm install
 ```
 
 3. **配置环境变量**
+
 ```bash
 export OPENAI_API_KEY=your-key
 export ANTHROPIC_API_KEY=your-key
@@ -72,6 +75,7 @@ export LOG_LEVEL=INFO
 ```
 
 4. **启动服务**
+
 ```bash
 # Python
 python main.py
@@ -80,11 +84,11 @@ python main.py
 npm start
 ```
 
-### Docker部署
+### Docker 部署
 
 ```bash
 # 构建镜像
-docker build -t openrouter .
+docker build -t gaiarouter .
 
 # 运行容器
 docker run -d \
@@ -111,7 +115,7 @@ curl http://localhost:8000/v1/models
 ### 日志位置
 
 - **控制台输出**：标准输出
-- **文件日志**：`logs/openrouter.log`（如果配置）
+- **文件日志**：`logs/gaiarouter.log`（如果配置）
 
 ### 日志级别
 
@@ -132,16 +136,18 @@ curl http://localhost:8000/v1/models
 建议监控以下指标：
 
 1. **服务可用性**
-   - HTTP响应状态码
+
+   - HTTP 响应状态码
    - 服务响应时间
 
 2. **性能指标**
-   - API响应时间
+
+   - API 响应时间
    - 请求处理速率
    - 错误率
 
 3. **资源使用**
-   - CPU使用率
+   - CPU 使用率
    - 内存使用率
    - 网络流量
 
@@ -173,16 +179,19 @@ tar -czf logs-backup-$(date +%Y%m%d).tar.gz logs/
 ### 恢复步骤
 
 1. **恢复配置文件**
+
 ```bash
 cp config.yaml.backup config.yaml
 ```
 
 2. **恢复环境变量**
+
 ```bash
 source env.backup
 ```
 
 3. **重启服务**
+
 ```bash
 # 重启服务
 systemctl restart openrouter
@@ -199,11 +208,13 @@ docker restart openrouter
 **症状**：服务启动失败
 
 **可能原因**：
+
 - 端口被占用
 - 配置文件错误
 - 依赖缺失
 
 **解决方法**：
+
 ```bash
 # 检查端口占用
 lsof -i :8000
@@ -219,16 +230,18 @@ pip list  # Python
 npm list  # Node.js
 ```
 
-#### 2. API请求失败
+#### 2. API 请求失败
 
-**症状**：API返回错误
+**症状**：API 返回错误
 
 **可能原因**：
-- API Key无效
+
+- API Key 无效
 - 模型不存在
 - 网络问题
 
 **解决方法**：
+
 ```bash
 # 检查API Key
 echo $OPENAI_API_KEY
@@ -245,11 +258,13 @@ curl https://api.openai.com/v1/models
 **症状**：请求超时
 
 **可能原因**：
-- 外部API响应慢
+
+- 外部 API 响应慢
 - 网络延迟
 - 超时设置过短
 
 **解决方法**：
+
 ```bash
 # 增加超时时间
 export REQUEST_TIMEOUT=120
@@ -263,10 +278,12 @@ ping api.openai.com
 **症状**：内存使用持续增长
 
 **可能原因**：
+
 - 连接未关闭
 - 缓存未清理
 
 **解决方法**：
+
 ```bash
 # 监控内存使用
 top -p $(pgrep -f openrouter)
@@ -281,17 +298,17 @@ systemctl restart openrouter
 
 ```bash
 # 查看最近的错误
-grep ERROR logs/openrouter.log | tail -20
+grep ERROR logs/gaiarouter.log | tail -20
 
 # 统计错误数量
-grep ERROR logs/openrouter.log | wc -l
+grep ERROR logs/gaiarouter.log | wc -l
 ```
 
 #### 查看性能日志
 
 ```bash
 # 查看响应时间
-grep "response_time" logs/openrouter.log | awk '{print $NF}'
+grep "response_time" logs/gaiarouter.log | awk '{print $NF}'
 ```
 
 ### 调试模式
@@ -351,12 +368,12 @@ export REQUEST_TIMEOUT=60
 
 ## 安全维护
 
-### 1. API Key管理
+### 1. API Key 管理
 
-- **不要**在代码中硬编码API Key
+- **不要**在代码中硬编码 API Key
 - **使用**环境变量或密钥管理服务
-- **定期**轮换API Key
-- **限制**API Key权限
+- **定期**轮换 API Key
+- **限制**API Key 权限
 
 ### 2. 日志安全
 
@@ -368,7 +385,7 @@ export REQUEST_TIMEOUT=60
 
 - **使用**HTTPS（生产环境）
 - **配置**防火墙规则
-- **限制**访问IP（如需要）
+- **限制**访问 IP（如需要）
 
 ### 4. 更新维护
 
@@ -391,12 +408,14 @@ npm update  # Node.js
 ### 版本升级步骤
 
 1. **备份数据**
+
 ```bash
 # 备份配置和日志
 tar -czf backup-$(date +%Y%m%d).tar.gz config.yaml logs/
 ```
 
 2. **停止服务**
+
 ```bash
 systemctl stop openrouter
 # 或
@@ -404,6 +423,7 @@ docker stop openrouter
 ```
 
 3. **更新代码**
+
 ```bash
 git pull origin main
 # 或
@@ -411,6 +431,7 @@ docker pull openrouter:latest
 ```
 
 4. **更新依赖**
+
 ```bash
 pip install -r requirements.txt
 # 或
@@ -418,6 +439,7 @@ npm install
 ```
 
 5. **启动服务**
+
 ```bash
 systemctl start openrouter
 # 或
@@ -425,6 +447,7 @@ docker start openrouter
 ```
 
 6. **验证服务**
+
 ```bash
 curl http://localhost:8000/health
 ```
@@ -432,9 +455,10 @@ curl http://localhost:8000/health
 ## 联系支持
 
 如遇到无法解决的问题，请：
+
 1. 收集错误日志
 2. 记录复现步骤
-3. 提交Issue到项目仓库
+3. 提交 Issue 到项目仓库
 
 ## 附录
 
@@ -445,7 +469,7 @@ curl http://localhost:8000/health
 systemctl status openrouter
 
 # 查看日志
-tail -f logs/openrouter.log
+tail -f logs/gaiarouter.log
 
 # 重启服务
 systemctl restart openrouter
@@ -457,4 +481,3 @@ ps aux | grep openrouter
 ### 配置文件示例
 
 见 `config.yaml.example`
-

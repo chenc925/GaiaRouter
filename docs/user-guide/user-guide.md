@@ -1,15 +1,15 @@
-# OpenRouter 用户手册
+# GaiaRouter 用户手册
 
 ## 简介
 
-OpenRouter是一个AI模型路由服务，提供统一的API接口，允许您通过单一端点访问多个AI模型（如OpenAI、Anthropic、Google等）。本手册将指导您如何安装、配置和使用OpenRouter。
+GaiaRouter 是一个 AI 模型路由服务，提供统一的 API 接口，允许您通过单一端点访问多个 AI 模型（如 OpenAI、Anthropic、Google 等）。本手册将指导您如何安装、配置和使用 GaiaRouter。
 
 ## 目录
 
 1. [快速开始](#快速开始)
 2. [安装部署](#安装部署)
 3. [配置说明](#配置说明)
-4. [API使用](#api使用)
+4. [API 使用](#api使用)
 5. [常见问题](#常见问题)
 
 ## 快速开始
@@ -17,17 +17,19 @@ OpenRouter是一个AI模型路由服务，提供统一的API接口，允许您�
 ### 前提条件
 
 - Python 3.9+ 或 Node.js 18+
-- 各模型提供商的API Key（OpenAI、Anthropic、Google等）
+- 各模型提供商的 API Key（OpenAI、Anthropic、Google 等）
 
 ### 快速启动
 
 1. **克隆项目**
+
 ```bash
 git clone <repository-url>
 cd openrouter
 ```
 
 2. **安装依赖**
+
 ```bash
 # Python
 pip install -r requirements.txt
@@ -36,7 +38,8 @@ pip install -r requirements.txt
 npm install
 ```
 
-3. **配置API Key**
+3. **配置 API Key**
+
 ```bash
 export OPENAI_API_KEY=your-openai-key
 export ANTHROPIC_API_KEY=your-anthropic-key
@@ -44,6 +47,7 @@ export GOOGLE_API_KEY=your-google-key
 ```
 
 4. **启动服务**
+
 ```bash
 # Python
 python main.py
@@ -56,31 +60,35 @@ npm start
 
 ## 安装部署
 
-### Docker部署
+### Docker 部署
 
 1. **构建镜像**
+
 ```bash
-docker build -t openrouter .
+docker build -t gaiarouter .
 ```
 
 2. **运行容器**
+
 ```bash
 docker run -d \
   -p 8000:8000 \
   -e OPENAI_API_KEY=your-key \
   -e ANTHROPIC_API_KEY=your-key \
   -e GOOGLE_API_KEY=your-key \
-  openrouter
+  gaiarouter
 ```
 
 ### 直接部署
 
 1. **安装依赖**
+
 ```bash
 pip install -r requirements.txt
 ```
 
 2. **配置环境变量**
+
 ```bash
 export OPENAI_API_KEY=your-key
 export ANTHROPIC_API_KEY=your-key
@@ -88,23 +96,24 @@ export GOOGLE_API_KEY=your-key
 ```
 
 3. **启动服务**
+
 ```bash
 python main.py
 ```
 
-### 使用systemd（Linux）
+### 使用 systemd（Linux）
 
-创建服务文件 `/etc/systemd/system/openrouter.service`：
+创建服务文件 `/etc/systemd/system/gaiarouter.service`：
 
 ```ini
 [Unit]
-Description=OpenRouter Service
+Description=GaiaRouter Service
 After=network.target
 
 [Service]
 Type=simple
 User=your-user
-WorkingDirectory=/path/to/openrouter
+WorkingDirectory=/path/to/gaiarouter
 Environment="OPENAI_API_KEY=your-key"
 Environment="ANTHROPIC_API_KEY=your-key"
 Environment="GOOGLE_API_KEY=your-key"
@@ -116,23 +125,24 @@ WantedBy=multi-user.target
 ```
 
 启动服务：
+
 ```bash
-sudo systemctl enable openrouter
-sudo systemctl start openrouter
+sudo systemctl enable gaiarouter
+sudo systemctl start gaiarouter
 ```
 
 ## 配置说明
 
 ### 环境变量配置
 
-| 变量名 | 说明 | 必需 |
-|--------|------|------|
-| `OPENAI_API_KEY` | OpenAI API Key | 是（如使用OpenAI） |
-| `ANTHROPIC_API_KEY` | Anthropic API Key | 是（如使用Anthropic） |
-| `GOOGLE_API_KEY` | Google API Key | 是（如使用Google） |
-| `PORT` | 服务端口 | 否（默认8000） |
-| `LOG_LEVEL` | 日志级别 | 否（默认INFO） |
-| `REQUEST_TIMEOUT` | 请求超时时间（秒） | 否（默认60） |
+| 变量名              | 说明               | 必需                   |
+| ------------------- | ------------------ | ---------------------- |
+| `OPENAI_API_KEY`    | OpenAI API Key     | 是（如使用 OpenAI）    |
+| `ANTHROPIC_API_KEY` | Anthropic API Key  | 是（如使用 Anthropic） |
+| `GOOGLE_API_KEY`    | Google API Key     | 是（如使用 Google）    |
+| `PORT`              | 服务端口           | 否（默认 8000）        |
+| `LOG_LEVEL`         | 日志级别           | 否（默认 INFO）        |
+| `REQUEST_TIMEOUT`   | 请求超时时间（秒） | 否（默认 60）          |
 
 ### 配置文件
 
@@ -159,12 +169,12 @@ server:
 
 logging:
   level: INFO
-  file: logs/openrouter.log
+  file: logs/gaiarouter.log
 ```
 
-## API使用
+## API 使用
 
-### 基础URL
+### 基础 URL
 
 ```
 http://localhost:8000/v1
@@ -172,7 +182,7 @@ http://localhost:8000/v1
 
 ### 认证
 
-目前OpenRouter不需要认证，但建议在生产环境中添加API Key认证。
+目前 GaiaRouter 不需要认证，但建议在生产环境中添加 API Key 认证。
 
 ### 聊天完成接口
 
@@ -196,7 +206,7 @@ curl -X POST http://localhost:8000/v1/chat/completions \
   }'
 ```
 
-**Python示例**：
+**Python 示例**：
 
 ```python
 import requests
@@ -216,18 +226,16 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
 ```
 
-**Node.js示例**：
+**Node.js 示例**：
 
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
-const response = await axios.post('http://localhost:8000/v1/chat/completions', {
-  model: 'openai/gpt-4',
-  messages: [
-    { role: 'user', content: 'Hello, world!' }
-  ],
+const response = await axios.post("http://localhost:8000/v1/chat/completions", {
+  model: "openai/gpt-4",
+  messages: [{ role: "user", content: "Hello, world!" }],
   temperature: 0.7,
-  max_tokens: 1000
+  max_tokens: 1000,
 });
 
 console.log(response.data);
@@ -300,15 +308,15 @@ curl http://localhost:8000/v1/models
 
 ### 请求参数
 
-| 参数 | 类型 | 必需 | 说明 |
-|------|------|------|------|
-| `model` | string | 是 | 模型标识符，格式：`{provider}/{model-name}` |
-| `messages` | array | 是 | 消息数组 |
-| `temperature` | number | 否 | 温度参数（0-2），默认0.7 |
-| `max_tokens` | number | 否 | 最大token数 |
-| `top_p` | number | 否 | Top-p采样参数 |
-| `frequency_penalty` | number | 否 | 频率惩罚 |
-| `presence_penalty` | number | 否 | 存在惩罚 |
+| 参数                | 类型   | 必需 | 说明                                        |
+| ------------------- | ------ | ---- | ------------------------------------------- |
+| `model`             | string | 是   | 模型标识符，格式：`{provider}/{model-name}` |
+| `messages`          | array  | 是   | 消息数组                                    |
+| `temperature`       | number | 否   | 温度参数（0-2），默认 0.7                   |
+| `max_tokens`        | number | 否   | 最大 token 数                               |
+| `top_p`             | number | 否   | Top-p 采样参数                              |
+| `frequency_penalty` | number | 否   | 频率惩罚                                    |
+| `presence_penalty`  | number | 否   | 存在惩罚                                    |
 
 ### 错误处理
 
@@ -328,7 +336,7 @@ curl http://localhost:8000/v1/models
 
 - `model_not_found`: 模型不存在
 - `invalid_request`: 请求格式错误
-- `authentication_error`: API Key无效
+- `authentication_error`: API Key 无效
 - `rate_limit_error`: 请求频率超限
 - `server_error`: 服务器内部错误
 - `timeout_error`: 请求超时
@@ -338,11 +346,12 @@ curl http://localhost:8000/v1/models
 ### Q1: 如何切换不同的模型？
 
 A: 在请求中修改 `model` 参数即可，例如：
+
 - `openai/gpt-4` → OpenAI GPT-4
 - `anthropic/claude-3-opus` → Anthropic Claude 3 Opus
 - `google/gemini-pro` → Google Gemini Pro
 
-### Q2: API Key在哪里配置？
+### Q2: API Key 在哪里配置？
 
 A: 可以通过环境变量或配置文件配置。推荐使用环境变量，更安全。
 
@@ -352,41 +361,43 @@ A: 日志默认输出到控制台和文件（如果配置了日志文件）。�
 
 ### Q4: 支持哪些模型提供商？
 
-A: 目前支持OpenAI、Anthropic和Google。未来会支持更多提供商。
+A: 目前支持 OpenAI、Anthropic 和 Google。未来会支持更多提供商。
 
 ### Q5: 如何处理请求超时？
 
-A: 可以通过 `REQUEST_TIMEOUT` 环境变量设置超时时间（秒），默认60秒。
+A: 可以通过 `REQUEST_TIMEOUT` 环境变量设置超时时间（秒），默认 60 秒。
 
 ### Q6: 如何添加新的模型提供商？
 
-A: 需要实现Provider接口和相应的Adapter。参考开发文档。
+A: 需要实现 Provider 接口和相应的 Adapter。参考开发文档。
 
 ### Q7: 服务无法启动怎么办？
 
 A: 检查：
+
 1. 端口是否被占用
-2. API Key是否正确配置
+2. API Key 是否正确配置
 3. 依赖是否安装完整
 4. 查看错误日志
 
 ### Q8: 如何提高性能？
 
-A: 
+A:
+
 1. 使用异步框架（FastAPI）
-2. 配置HTTP连接池
+2. 配置 HTTP 连接池
 3. 合理设置超时时间
 4. 使用缓存（如果支持）
 
 ## 技术支持
 
 如有问题，请：
+
 1. 查看日志文件
 2. 检查配置是否正确
-3. 参考API文档
-4. 提交Issue到项目仓库
+3. 参考 API 文档
+4. 提交 Issue 到项目仓库
 
 ## 更新日志
 
 查看 `CHANGELOG.md` 了解版本更新信息。
-
