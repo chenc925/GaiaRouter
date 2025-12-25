@@ -1,202 +1,145 @@
-# GaiaRouter SDD 文档总览
+# GaiaRouter Documentation
 
-本文档提供了 GaiaRouter 项目所有 SDD 阶段文档的索引和说明。
+Welcome to the GaiaRouter documentation! This guide will help you understand, use, and contribute to GaiaRouter.
 
-## SDD 文档结构
+## Documentation Structure
 
-按照规范驱动开发（Spec-Driven Development）的标准，项目文档分为以下阶段：
+### 🚀 Getting Started
 
-```
-sddDemo/
-├── specs/              # 阶段1：规范文档
-│   ├── base/          # 基础规则
-│   ├── changes/       # 变更记录
-│   └── features/      # 功能规范
-│       └── openrouter/
-│           ├── spec.md           # 功能规范
-│           ├── requirements.md  # 详细需求
-│           └── api.md           # API规范
-│
-├── designs/           # 阶段2：设计文档
-│   └── openrouter/
-│       ├── architecture.md     # 系统架构设计
-│       ├── module-design.md    # 模块详细设计
-│       └── data-flow.md        # 数据流设计
-│
-├── tasks/             # 阶段3：任务分解
-│   └── openrouter/
-│       ├── README.md           # 任务管理说明
-│       └── task-breakdown.md   # 详细任务分解
-│
-└── docs/              # 阶段4-6：其他文档
-    ├── test-plan/              # 测试计划
-    │   └── test-plan.md
-    ├── user-guide/             # 用户手册
-    │   └── user-guide.md
-    ├── maintenance/            # 维护手册
-    │   └── maintenance-manual.md
-    └── deployment/             # 部署指南
-        └── deployment-guide.md
-```
+Perfect for new users who want to get GaiaRouter up and running quickly.
 
-## 文档说明
+- **[Overview](getting-started/README.md)** - Introduction to GaiaRouter
+- **[Installation](getting-started/installation.md)** - Complete installation guide
+- **[Configuration](getting-started/configuration.md)** - Environment setup and configuration
 
-### 阶段 1：规范文档（specs/）
+**Start here if you're new to GaiaRouter!**
 
-**目的**：定义系统的功能需求和非功能需求
+### 📚 User Guides
 
-**文档列表**：
+Comprehensive guides for using GaiaRouter in production.
 
-- `specs/features/openrouter/spec.md` - 功能规范概述
-- `specs/features/openrouter/requirements.md` - 详细功能需求和非功能需求
-- `specs/features/openrouter/api.md` - API 接口规范
-- `specs/base/` - 基础规则和编码规范
-- `specs/changes/` - 规范变更记录
+- **[User Guide](guides/user-guide/user-guide.md)** - Complete user manual
+- **[Maintenance Guide](guides/maintenance/maintenance-manual.md)** - System maintenance and operations
 
-**阅读顺序**：
+**Read these to master GaiaRouter usage.**
 
-1. 先阅读 `spec.md` 了解功能概述
-2. 阅读 `requirements.md` 了解详细需求
-3. 阅读 `api.md` 了解 API 接口规范
+### 🏗️ Architecture
 
-### 阶段 2：设计文档（designs/）
+In-depth technical documentation about GaiaRouter's design and architecture.
 
-**目的**：提供系统的设计方案，包括架构和模块设计
+- **[Architecture Overview](architecture/README.md)** - System design and architecture
 
-**文档列表**：
+**For those who want to understand how GaiaRouter works internally.**
 
-- `designs/openrouter/architecture.md` - 系统架构设计
-- `designs/openrouter/module-design.md` - 模块详细设计
-- `designs/openrouter/data-flow.md` - 数据流设计
+### 📡 API Reference
 
-**阅读顺序**：
+Complete API documentation for developers integrating with GaiaRouter.
 
-1. 先阅读 `architecture.md` 了解整体架构
-2. 阅读 `module-design.md` 了解模块设计
-3. 阅读 `data-flow.md` 了解数据流程
+- **[API Documentation](api/api-documentation.md)** - Complete REST API reference
+- **[API Examples](../examples/README.md)** - Code examples for common use cases
 
-### 阶段 3：任务分解（tasks/）
+**Essential for API integration developers.**
 
-**目的**：将设计方案拆解为具体的开发任务
+### 🚀 Deployment
 
-**文档列表**：
+Guides for deploying GaiaRouter in different environments.
 
-- `tasks/openrouter/task-breakdown.md` - 详细任务分解
-- `tasks/openrouter/README.md` - 任务管理说明
+- **[Deployment Guide](deployment/deployment-guide.md)** - General deployment instructions
+- **[Docker Deployment](deployment/docker-deployment.md)** - Deploy with Docker and Docker Compose
 
-**使用方式**：
+**Follow these when deploying to production.**
 
-- 按照任务优先级进行开发
-- 定期更新任务状态
-- 跟踪任务进度
+### 🛠️ Development
 
-### 阶段 4：测试计划（docs/test-plan/）
+Resources for contributors and developers working on GaiaRouter.
 
-**目的**：制定测试策略和测试用例
+- **[Database Guide](development/database.md)** - Database migrations with Alembic
+- **[Testing Guide](development/test-plan/)** - Testing strategies and test plans
+- **[Improvements Log](development/IMPROVEMENTS_COMPLETED.md)** - Completed improvements
 
-**文档列表**：
+**Start here if you want to contribute code.**
 
-- `docs/test-plan/test-plan.md` - 测试计划和测试用例
+## Quick Links
 
-**内容**：
+### For New Users
+1. [What is GaiaRouter?](getting-started/README.md#what-is-gaiarouter)
+2. [Quick Start](getting-started/README.md#quick-start)
+3. [Basic Usage Example](../examples/basic_usage.py)
 
-- 测试策略
-- 测试范围
-- 测试用例（18 个测试用例）
-- 测试执行计划
+### For API Developers
+1. [API Documentation](api/api-documentation.md)
+2. [Authentication](architecture/README.md#authentication--authorization)
+3. [Code Examples](../examples/)
 
-### 阶段 5：用户手册（docs/user-guide/）
+### For Contributors
+1. [Contributing Guide](../CONTRIBUTING.md)
+2. [Code Style](../CONTRIBUTING.md#coding-standards)
+3. [Pull Request Process](../CONTRIBUTING.md#pull-request-process)
 
-**目的**：指导用户安装、配置和使用系统
+### For Operators
+1. [Deployment Guide](deployment/deployment-guide.md)
+2. [Maintenance Manual](guides/maintenance/maintenance-manual.md)
+3. [Monitoring and Logging](architecture/README.md#monitoring--logging)
 
-**文档列表**：
+## How to Use This Documentation
 
-- `docs/user-guide/user-guide.md` - 用户使用手册
+### For Different Audiences
 
-**内容**：
+**I'm a new user, where do I start?**
+→ Start with [Getting Started](getting-started/README.md) and follow the Quick Start guide.
 
-- 快速开始
-- 安装部署
-- 配置说明
-- API 使用示例
-- 常见问题
+**I want to integrate GaiaRouter into my application**
+→ Check the [API Documentation](api/api-documentation.md) and [Examples](../examples/).
 
-### 阶段 6：维护和部署（docs/）
+**I want to understand how GaiaRouter works**
+→ Read the [Architecture Overview](architecture/README.md).
 
-**目的**：为运维人员提供维护和部署指导
+**I want to deploy GaiaRouter to production**
+→ Follow the [Deployment Guide](deployment/deployment-guide.md).
 
-**文档列表**：
+**I want to contribute code**
+→ Read the [Contributing Guide](../CONTRIBUTING.md).
 
-- `docs/maintenance/maintenance-manual.md` - 维护手册
-- `docs/deployment/deployment-guide.md` - 部署指南
+**I need help troubleshooting an issue**
+→ Check the [Maintenance Manual](guides/maintenance/maintenance-manual.md) and open an [issue](https://github.com/your-org/GaiaRouter/issues) if needed.
 
-**内容**：
+## Getting Help
 
-- 系统架构概述
-- 部署步骤
-- 监控和日志
-- 故障排除
-- 性能优化
+### Community Support
 
-## SDD 工作流程
+- **GitHub Issues**: [Report bugs and request features](https://github.com/your-org/GaiaRouter/issues)
+- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/your-org/GaiaRouter/discussions)
 
-### 1. 需求阶段（specs/）
+### Documentation Issues
 
-- 编写功能规范
-- 定义详细需求
-- 制定 API 规范
-- 建立基础规则
+Found a problem with the documentation? Please help us improve it!
 
-### 2. 设计阶段（designs/）
+- [Report documentation issues](https://github.com/your-org/GaiaRouter/issues/new?labels=documentation)
+- [Contribute documentation improvements](../CONTRIBUTING.md#documentation)
 
-- 设计系统架构
-- 设计模块结构
-- 设计数据流程
-- 技术选型
+## Contributing to Documentation
 
-### 3. 任务分解（tasks/）
+We welcome documentation contributions! Here's how you can help:
 
-- 分解开发任务
-- 估算工作量
-- 确定优先级
-- 分配任务
+1. **Fix typos and errors** - Even small fixes are valuable
+2. **Improve clarity** - Make complex topics easier to understand
+3. **Add examples** - More examples help everyone
+4. **Write guides** - Share your experience and best practices
 
-### 4. 开发阶段（src/）
+See [Contributing Guide](../CONTRIBUTING.md#documentation) for details.
 
-- 实现核心功能
-- 实现 API 接口
-- 编写单元测试
-- 代码审查
+## Stay Updated
 
-### 5. 测试阶段（tests/）
+- **CHANGELOG**: [View recent changes](../CHANGELOG.md)
+- **Releases**: [GitHub Releases](https://github.com/your-org/GaiaRouter/releases)
+- **Roadmap**: [Project Roadmap](../README.md#roadmap)
 
-- 执行单元测试
-- 执行集成测试
-- 执行功能测试
-- 性能测试
+---
 
-### 6. 部署阶段（docs/deployment/）
+<div align="center">
 
-- 准备部署环境
-- 执行部署
-- 验证部署
-- 监控运行
+**[⬆ Back to Top](#gaiarouter-documentation)**
 
-## 文档更新
+Need help? [Open an issue](https://github.com/your-org/GaiaRouter/issues) or [start a discussion](https://github.com/your-org/GaiaRouter/discussions)
 
-- **规范变更**：在 `specs/changes/` 记录变更
-- **设计更新**：更新 `designs/` 中的设计文档
-- **任务更新**：更新 `tasks/` 中的任务状态
-- **文档版本**：使用 Git 管理文档版本
-
-## 相关资源
-
-- [SDD 方法论](https://www.thoughtworks.com/zh-cn/radar/techniques/spec-driven-development)
-- [项目仓库](repository-url)
-- [问题反馈](issues-url)
-
-## 文档维护
-
-- 文档应与代码同步更新
-- 重大变更需要更新相关文档
-- 定期审查文档的准确性和完整性
+</div>
