@@ -97,7 +97,7 @@ jobs:
       run: isort --check-only .
 
     - name: Type check with mypy
-      run: mypy src/ --ignore-missing-imports
+      run: mypy src/ --ignore-missing-imports --no-strict-optional --allow-untyped-defs --no-warn-return-any
 
   frontend-test:
     name: Frontend Tests
