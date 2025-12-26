@@ -98,13 +98,24 @@ async def create_api_key(
             expires_at=None,
         )
 
-        # 创建响应（包含key值）
-        response = _api_key_to_response(new_key, include_key=False, organization_name=org.name)
-        # 手动设置key值（仅在创建时返回）
-        response.key = key_value
+        # 创建响应（包含key值）- 直接构建响应对象而不是修改
+        response = APIKeyResponse(
+            id=new_key.id,
+            organization_id=new_key.organization_id,
+            organization_name=org.name,
+            name=new_key.name,
+            description=new_key.description,
+            key=key_value,  # 仅在创建时返回明文key
+            permissions=new_key.permissions or [],
+            status=new_key.status,
+            created_at=new_key.created_at.isoformat() + "Z" if new_key.created_at else None,
+            expires_at=new_key.expires_at.isoformat() + "Z" if new_key.expires_at else None,
+            last_used_at=new_key.last_used_at.isoformat() + "Z" if new_key.last_used_at else None,
+            updated_at=new_key.updated_at.isoformat() + "Z" if new_key.updated_at else None,
+        )
 
         logger.info(f"API Key created: {new_key.id}, key_value: {key_value[:20]}...")
-        logger.info(f"Response: {response.model_dump()}")
+        logger.info(f"Response key field: {response.key[:20] if response.key else 'None'}...")
 
         return response
 

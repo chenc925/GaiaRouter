@@ -23,7 +23,7 @@
         </a-descriptions-item>
         <a-descriptions-item label="API Key" :span="2">
           <a-space>
-            <span class="api-key-value" v-if="apiKey.key">{{ apiKey.key }}</span>
+            <span class="api-key-value" v-if="apiKey.key">{{ maskApiKey(apiKey.key) }}</span>
             <span v-else>-</span>
             <a-button
               v-if="apiKey.key"
@@ -68,6 +68,7 @@
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApiKeyStore } from '@/stores/apiKeys'
+import { Message } from '@arco-design/web-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -94,9 +95,16 @@ const getStatusText = (status: string) => {
   return texts[status] || status
 }
 
+const maskApiKey = (key: string) => {
+  if (!key || key.length < 8) return '****'
+  // 显示前4个字符和后4个字符，中间用 * 隐藏
+  return `${key.substring(0, 4)}${'*'.repeat(20)}${key.substring(key.length - 4)}`
+}
+
 const copyKey = (key: string) => {
   if (!key) return
   navigator.clipboard.writeText(key)
+  Message.success('已复制 API Key')
 }
 
 onMounted(async () => {

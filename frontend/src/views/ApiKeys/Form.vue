@@ -29,17 +29,21 @@
           </a-select>
         </a-form-item>
         <a-form-item v-if="createdKey" field="key" label="API Key（请妥善保存，仅显示一次）">
-          <a-input
-            :value="createdKey.key"
+          <a-textarea
+            :model-value="createdKey.key"
             readonly
-            style="font-family: monospace"
+            :auto-size="{ minRows: 2, maxRows: 4 }"
+            style="font-family: 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace; font-size: 13px;"
           />
           <template #extra>
-            <a-space>
-              <a-button type="text" size="small" @click="copyKey">
-                复制
+            <a-space style="margin-top: 12px;">
+              <a-button type="primary" size="small" @click="copyKey">
+                <template #icon>
+                  <icon-copy />
+                </template>
+                复制 API Key
               </a-button>
-              <a-button type="primary" size="small" @click="$router.push('/api-keys')">
+              <a-button size="small" @click="$router.push('/api-keys')">
                 返回列表
               </a-button>
             </a-space>
@@ -64,6 +68,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useApiKeyStore } from '@/stores/apiKeys'
 import { useOrganizationStore } from '@/stores/organizations'
 import { Message } from '@arco-design/web-vue'
+import { IconCopy } from '@arco-design/web-vue/es/icon'
 import type { FormInstance } from '@arco-design/web-vue'
 
 const route = useRoute()
@@ -109,10 +114,20 @@ const handleSubmit = async () => {
       router.push('/api-keys')
     } else {
       const key = await apiKeyStore.createApiKey(submitData)
-      console.log('Received API key from backend:', key)
-      console.log('Key value:', key.key)
-      createdKey.value = { key: key.key || '' }
-      console.log('createdKey.value:', createdKey.value)
+      console.log('[Form] Received API key from backend:', key)
+      console.log('[Form] Key value:', key.key)
+      console.log('[Form] Key type:', typeof key.key)
+      console.log('[Form] Full key object:', JSON.stringify(key, null, 2))
+
+      if (!key.key) {
+        console.error('[Form] ERROR: key.key is empty or undefined!')
+        Message.error('API Key 创建成功，但未返回 key 值，请刷新页面查看')
+        return
+      }
+
+      createdKey.value = { key: key.key }
+      console.log('[Form] createdKey.value:', createdKey.value)
+      console.log('[Form] createdKey.value.key:', createdKey.value.key)
       Message.success('创建成功，请保存 API Key')
     }
   } catch (error: any) {

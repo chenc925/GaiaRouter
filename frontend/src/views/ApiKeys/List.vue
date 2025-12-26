@@ -59,7 +59,7 @@
         >
           <template #key="{ record }">
             <a-space size="small">
-              <span class="api-key-value" v-if="record.key">{{ record.key }}</span>
+              <span class="api-key-value" v-if="record.key">{{ maskApiKey(record.key) }}</span>
               <span v-else>-</span>
               <a-button
                 v-if="record.key"
@@ -191,6 +191,12 @@ const handleDelete = async (id: string) => {
   } catch (error) {
     Message.error('删除失败')
   }
+}
+
+const maskApiKey = (key: string) => {
+  if (!key || key.length < 8) return '****'
+  // 显示前4个字符和后4个字符，中间用 * 隐藏
+  return `${key.substring(0, 4)}${'*'.repeat(20)}${key.substring(key.length - 4)}`
 }
 
 const copyKey = (key: string) => {
