@@ -1,17 +1,34 @@
 <template>
   <div class="chat-test">
-    <a-page-header title="对话测试" subtitle="使用组织API Key进行AI模型对话测试" />
+    <a-page-header
+      title="对话测试"
+      subtitle="使用组织API Key进行AI模型对话测试"
+    />
     
-    <a-card class="config-card" title="配置" :bordered="false">
+    <a-card
+      class="config-card"
+      title="配置"
+      :bordered="false"
+    >
       <template #extra>
-        <a-button type="text" size="small" @click="$router.push('/api-usage')">
+        <a-button
+          type="text"
+          size="small"
+          @click="$router.push('/api-usage')"
+        >
           查看终端 API 使用说明
         </a-button>
       </template>
-      <a-form :model="config" layout="vertical">
+      <a-form
+        :model="config"
+        layout="vertical"
+      >
         <a-row :gutter="16">
           <a-col :span="8">
-            <a-form-item label="API Key" required>
+            <a-form-item
+              label="API Key"
+              required
+            >
               <a-select
                 v-model="config.apiKeyId"
                 placeholder="选择API Key"
@@ -30,7 +47,10 @@
           </a-col>
           
           <a-col :span="8">
-            <a-form-item label="模型" required>
+            <a-form-item
+              label="模型"
+              required
+            >
               <a-select
                 v-model="config.model"
                 placeholder="选择模型"
@@ -83,9 +103,15 @@
       </a-form>
     </a-card>
 
-    <a-card class="chat-card" :bordered="false">
+    <a-card
+      class="chat-card"
+      :bordered="false"
+    >
       <div class="chat-container">
-        <div class="messages-container" ref="messagesContainer">
+        <div
+          ref="messagesContainer"
+          class="messages-container"
+        >
           <div
             v-for="(message, index) in messages"
             :key="index"
@@ -100,19 +126,34 @@
                 <span
                   v-if="isStreaming && message.role === 'assistant' && index === messages.length - 1"
                   class="streaming-caret"
-                ></span>
+                />
               </template>
               <template v-else>
-                <div v-for="(part, idx) in message.content" :key="idx" class="content-part">
-                  <div v-if="part.type === 'text'">{{ part.text }}</div>
-                  <img v-else-if="part.type === 'image_url'" :src="part.image_url?.url" class="message-image" />
+                <div
+                  v-for="(part, idx) in message.content"
+                  :key="idx"
+                  class="content-part"
+                >
+                  <div v-if="part.type === 'text'">
+                    {{ part.text }}
+                  </div>
+                  <img
+                    v-else-if="part.type === 'image_url'"
+                    :src="part.image_url?.url"
+                    class="message-image"
+                  >
                 </div>
               </template>
             </div>
           </div>
           
-          <div v-if="loading && !isStreaming" class="message-item message-assistant">
-            <div class="message-role">助手</div>
+          <div
+            v-if="loading && !isStreaming"
+            class="message-item message-assistant"
+          >
+            <div class="message-role">
+              助手
+            </div>
             <div class="message-content">
               <a-spin size="small" /> 思考中...
             </div>
@@ -124,15 +165,17 @@
             :file-list="imageFiles"
             list-type="picture-card"
             :auto-upload="false"
-            @change="handleUploadChange"
-            @preview="handlePreview"
             accept="image/*"
             :limit="5"
+            @change="handleUploadChange"
+            @preview="handlePreview"
           >
             <template #upload-button>
               <div class="upload-btn">
                 <icon-plus />
-                <div style="margin-top: 8px">添加图片</div>
+                <div style="margin-top: 8px">
+                  添加图片
+                </div>
               </div>
             </template>
           </a-upload>
@@ -145,12 +188,14 @@
           />
           
           <div class="input-actions">
-            <a-button @click="handleClear">清空对话</a-button>
+            <a-button @click="handleClear">
+              清空对话
+            </a-button>
             <a-button
               type="primary"
-              @click="handleSend"
               :loading="loading"
               :disabled="!canSend"
+              @click="handleSend"
             >
               发送
             </a-button>
@@ -160,8 +205,15 @@
     </a-card>
     
     <!-- 图片预览 -->
-    <a-modal :visible="previewVisible" :footer="null" @cancel="previewVisible = false">
-      <img :src="previewImage" style="width: 100%" />
+    <a-modal
+      :visible="previewVisible"
+      :footer="null"
+      @cancel="previewVisible = false"
+    >
+      <img
+        :src="previewImage"
+        style="width: 100%"
+      >
     </a-modal>
   </div>
 </template>

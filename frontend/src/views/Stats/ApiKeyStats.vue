@@ -6,12 +6,16 @@
     />
 
     <a-card>
-      <a-space direction="vertical" :size="16" style="width: 100%">
+      <a-space
+        direction="vertical"
+        :size="16"
+        style="width: 100%"
+      >
         <a-space>
           <a-range-picker
             v-model="dateRange"
-            @change="handleDateChange"
             style="width: 300px"
+            @change="handleDateChange"
           />
           <a-select
             v-model="groupBy"
@@ -19,20 +23,37 @@
             style="width: 150px"
             @change="handleSearch"
           >
-            <a-option value="day">按日</a-option>
-            <a-option value="week">按周</a-option>
-            <a-option value="month">按月</a-option>
+            <a-option value="day">
+              按日
+            </a-option>
+            <a-option value="week">
+              按周
+            </a-option>
+            <a-option value="month">
+              按月
+            </a-option>
           </a-select>
-          <a-button type="primary" @click="handleSearch">查询</a-button>
+          <a-button
+            type="primary"
+            @click="handleSearch"
+          >
+            查询
+          </a-button>
         </a-space>
 
         <div v-if="stats">
           <a-row :gutter="16">
             <a-col :span="6">
-              <a-statistic title="总请求数" :value="stats.summary.total_requests" />
+              <a-statistic
+                title="总请求数"
+                :value="stats.summary.total_requests"
+              />
             </a-col>
             <a-col :span="6">
-              <a-statistic title="总 Token 数" :value="stats.summary.total_tokens" />
+              <a-statistic
+                title="总 Token 数"
+                :value="stats.summary.total_tokens"
+              />
             </a-col>
             <a-col :span="6">
               <a-statistic
@@ -44,7 +65,10 @@
             </a-col>
           </a-row>
 
-          <div v-if="stats.by_date" style="margin-top: 24px">
+          <div
+            v-if="stats.by_date"
+            style="margin-top: 24px"
+          >
             <h3>按日期统计</h3>
             <a-table
               :columns="dateColumns"

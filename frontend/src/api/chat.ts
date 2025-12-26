@@ -106,6 +106,7 @@ export async function sendChatMessageStream(
   let buffer = ''
 
   // 简单解析 SSE 数据流
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const { value, done } = await reader.read()
     if (done) break

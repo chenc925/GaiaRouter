@@ -13,17 +13,29 @@
       </template>
     </a-page-header>
 
-    <a-card v-if="apiKey" :loading="apiKeyStore.loading">
-      <a-descriptions :column="2" bordered>
+    <a-card
+      v-if="apiKey"
+      :loading="apiKeyStore.loading"
+    >
+      <a-descriptions
+        :column="2"
+        bordered
+      >
         <a-descriptions-item label="API Key ID">
           {{ apiKey.id }}
         </a-descriptions-item>
         <a-descriptions-item label="名称">
           {{ apiKey.name }}
         </a-descriptions-item>
-        <a-descriptions-item label="API Key" :span="2">
+        <a-descriptions-item
+          label="API Key"
+          :span="2"
+        >
           <a-space>
-            <span class="api-key-value" v-if="apiKey.key">{{ maskApiKey(apiKey.key) }}</span>
+            <span
+              v-if="apiKey.key"
+              class="api-key-value"
+            >{{ maskApiKey(apiKey.key) }}</span>
             <span v-else>-</span>
             <a-button
               v-if="apiKey.key"
@@ -35,12 +47,21 @@
             </a-button>
           </a-space>
         </a-descriptions-item>
-        <a-descriptions-item label="描述" :span="2">
+        <a-descriptions-item
+          label="描述"
+          :span="2"
+        >
           {{ apiKey.description || '-' }}
         </a-descriptions-item>
-        <a-descriptions-item label="权限" :span="2">
+        <a-descriptions-item
+          label="权限"
+          :span="2"
+        >
           <a-space>
-            <a-tag v-for="perm in apiKey.permissions" :key="perm">
+            <a-tag
+              v-for="perm in apiKey.permissions"
+              :key="perm"
+            >
               {{ perm }}
             </a-tag>
           </a-space>

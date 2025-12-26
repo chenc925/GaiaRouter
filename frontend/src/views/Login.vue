@@ -3,10 +3,16 @@
     <div class="login-container">
       <div class="login-left">
         <div class="brand">
-          <div class="logo-mark">G</div>
+          <div class="logo-mark">
+            G
+          </div>
           <div class="brand-text">
-            <div class="brand-title">GaiaRouter 管理后台</div>
-            <div class="brand-subtitle">统一管理 API Key、组织与模型路由</div>
+            <div class="brand-title">
+              GaiaRouter 管理后台
+            </div>
+            <div class="brand-subtitle">
+              统一管理 API Key、组织与模型路由
+            </div>
           </div>
         </div>
         <div class="brand-desc">
@@ -16,10 +22,17 @@
         </div>
       </div>
       <div class="login-right">
-        <a-card class="login-card" :bordered="false">
+        <a-card
+          class="login-card"
+          :bordered="false"
+        >
           <div class="login-card-header">
-            <div class="login-card-title">欢迎登录</div>
-            <div class="login-card-subtitle">使用管理员账号访问 GaiaRouter 控制台</div>
+            <div class="login-card-title">
+              欢迎登录
+            </div>
+            <div class="login-card-subtitle">
+              使用管理员账号访问 GaiaRouter 控制台
+            </div>
           </div>
           <a-form
             :model="form"

@@ -7,12 +7,16 @@
 
     <a-card>
       <a-form
+        ref="formRef"
         :model="form"
         :rules="rules"
-        ref="formRef"
         layout="vertical"
       >
-        <a-form-item v-if="!isEdit && !createdKey" field="organization_id" label="组织">
+        <a-form-item
+          v-if="!isEdit && !createdKey"
+          field="organization_id"
+          label="组织"
+        >
           <a-select
             v-model="form.organization_id"
             placeholder="请选择组织"
@@ -28,7 +32,11 @@
             </a-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-if="createdKey" field="key" label="API Key（请妥善保存，仅显示一次）">
+        <a-form-item
+          v-if="createdKey"
+          field="key"
+          label="API Key（请妥善保存，仅显示一次）"
+        >
           <a-textarea
             :model-value="createdKey.key"
             readonly
@@ -37,13 +45,20 @@
           />
           <template #extra>
             <a-space style="margin-top: 12px;">
-              <a-button type="primary" size="small" @click="copyKey">
+              <a-button
+                type="primary"
+                size="small"
+                @click="copyKey"
+              >
                 <template #icon>
                   <icon-copy />
                 </template>
                 复制 API Key
               </a-button>
-              <a-button size="small" @click="$router.push('/api-keys')">
+              <a-button
+                size="small"
+                @click="$router.push('/api-keys')"
+              >
                 返回列表
               </a-button>
             </a-space>
@@ -51,10 +66,16 @@
         </a-form-item>
         <a-form-item v-if="!createdKey">
           <a-space>
-            <a-button type="primary" :loading="loading" @click="handleSubmit">
+            <a-button
+              type="primary"
+              :loading="loading"
+              @click="handleSubmit"
+            >
               {{ isEdit ? '更新' : '生成 API Key' }}
             </a-button>
-            <a-button @click="$router.back()">取消</a-button>
+            <a-button @click="$router.back()">
+              取消
+            </a-button>
           </a-space>
         </a-form-item>
       </a-form>

@@ -2,58 +2,90 @@
   <a-layout class="layout">
     <a-layout-header class="header">
       <div class="logo">
-        <div class="logo-mark">G</div>
-        <div class="logo-text">GaiaRouter</div>
+        <div class="logo-mark">
+          G
+        </div>
+        <div class="logo-text">
+          GaiaRouter
+        </div>
       </div>
       <a-menu
         mode="horizontal"
         :selected-keys="selectedKeys"
         class="header-menu"
       >
-        <a-menu-item key="dashboard" @click="$router.push('/dashboard')">
+        <a-menu-item
+          key="dashboard"
+          @click="$router.push('/dashboard')"
+        >
           仪表盘
         </a-menu-item>
       </a-menu>
       <div class="user-info">
-        <a-button type="text" @click="handleLogout">退出</a-button>
+        <a-button
+          type="text"
+          @click="handleLogout"
+        >
+          退出
+        </a-button>
       </div>
     </a-layout-header>
     <a-layout>
-      <a-layout-sider class="sider" :width="200" collapsible breakpoint="lg">
+      <a-layout-sider
+        class="sider"
+        :width="200"
+        collapsible
+        breakpoint="lg"
+      >
         <a-menu
           mode="vertical"
           :selected-keys="selectedKeys"
           @menu-item-click="handleMenuClick"
         >
           <a-menu-item key="dashboard">
-            <template #icon><IconDashboard /></template>
+            <template #icon>
+              <IconDashboard />
+            </template>
             仪表盘
           </a-menu-item>
           <a-menu-item key="organizations">
-            <template #icon><IconUserGroup /></template>
+            <template #icon>
+              <IconUserGroup />
+            </template>
             组织管理
           </a-menu-item>
           <a-menu-item key="api-keys">
-            <template #icon><IconSettings /></template>
+            <template #icon>
+              <IconSettings />
+            </template>
             API Key 管理
           </a-menu-item>
           <a-menu-item key="models">
-            <template #icon><IconSettings /></template>
+            <template #icon>
+              <IconSettings />
+            </template>
             模型管理
           </a-menu-item>
           <a-menu-item key="stats">
-            <template #icon><IconBarChart /></template>
+            <template #icon>
+              <IconBarChart />
+            </template>
             数据统计
           </a-menu-item>
           <a-menu-item key="chat">
-            <template #icon><IconDashboard /></template>
+            <template #icon>
+              <IconDashboard />
+            </template>
             对话测试
           </a-menu-item>
         </a-menu>
       </a-layout-sider>
       <a-layout-content class="content">
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <component :is="Component" />
           </transition>
         </router-view>

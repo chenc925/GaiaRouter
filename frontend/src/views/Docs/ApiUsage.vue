@@ -1,8 +1,15 @@
 <template>
   <div class="api-usage">
-    <a-page-header title="终端 API 使用说明" subtitle="面向终端应用的 Chat 与模型调用示例" />
+    <a-page-header
+      title="终端 API 使用说明"
+      subtitle="面向终端应用的 Chat 与模型调用示例"
+    />
 
-    <a-card class="section-card" title="1. 基本信息" :bordered="false">
+    <a-card
+      class="section-card"
+      title="1. 基本信息"
+      :bordered="false"
+    >
       <a-typography>
         <a-typography-paragraph>
           <strong>Base URL：</strong>
@@ -17,17 +24,25 @@
       </a-typography>
     </a-card>
 
-    <a-card class="section-card" title="2. 获取可用模型列表 (GET /v1/models)" :bordered="false">
+    <a-card
+      class="section-card"
+      title="2. 获取可用模型列表 (GET /v1/models)"
+      :bordered="false"
+    >
       <a-typography>
         <a-typography-paragraph>
           终端应用在发起聊天前，应先调用 <code>/v1/models</code> 获取可用模型列表，只能调用已启用的模型。
         </a-typography-paragraph>
-        <a-typography-title :heading="5">请求示例（curl）</a-typography-title>
+        <a-typography-title :heading="5">
+          请求示例（curl）
+        </a-typography-title>
         <a-typography-paragraph>
           <pre><code>curl -X GET {{ baseUrl }}/models \
   -H "Authorization: Bearer &lt;YOUR_API_KEY&gt;"</code></pre>
         </a-typography-paragraph>
-        <a-typography-title :heading="5">响应示例</a-typography-title>
+        <a-typography-title :heading="5">
+          响应示例
+        </a-typography-title>
         <a-typography-paragraph>
           <pre><code>{
   "data": [
@@ -44,12 +59,18 @@
       </a-typography>
     </a-card>
 
-    <a-card class="section-card" title="3. 发起聊天补全 (POST /v1/chat/completions)" :bordered="false">
+    <a-card
+      class="section-card"
+      title="3. 发起聊天补全 (POST /v1/chat/completions)"
+      :bordered="false"
+    >
       <a-typography>
         <a-typography-paragraph>
           Chat 接口兼容 OpenAI 风格，支持普通模式与流式模式。
         </a-typography-paragraph>
-        <a-typography-title :heading="5">请求示例（普通模式）</a-typography-title>
+        <a-typography-title :heading="5">
+          请求示例（普通模式）
+        </a-typography-title>
         <a-typography-paragraph>
           <pre><code>curl -X POST {{ baseUrl }}/chat/completions \
   -H "Authorization: Bearer &lt;YOUR_API_KEY&gt;" \
@@ -63,7 +84,9 @@
     "max_tokens": 1000
   }'</code></pre>
         </a-typography-paragraph>
-        <a-typography-title :heading="5">请求示例（流式模式）</a-typography-title>
+        <a-typography-title :heading="5">
+          请求示例（流式模式）
+        </a-typography-title>
         <a-typography-paragraph>
           <pre><code>curl -N -X POST {{ baseUrl }}/chat/completions \
   -H "Authorization: Bearer &lt;YOUR_API_KEY&gt;" \
@@ -76,7 +99,9 @@
     "stream": true
   }'</code></pre>
         </a-typography-paragraph>
-        <a-typography-title :heading="5">关键参数说明</a-typography-title>
+        <a-typography-title :heading="5">
+          关键参数说明
+        </a-typography-title>
         <a-typography-paragraph>
           <ul>
             <li><strong>model</strong>：模型标识符，例如 <code>openai/gpt-4</code> 或 <code>openrouter/xxx</code>。</li>
@@ -89,7 +114,11 @@
       </a-typography>
     </a-card>
 
-    <a-card class="section-card" title="4. 集成建议" :bordered="false">
+    <a-card
+      class="section-card"
+      title="4. 集成建议"
+      :bordered="false"
+    >
       <a-typography>
         <a-typography-paragraph>
           - 首次集成建议先在「对话测试」页面验证 API Key 与模型是否可用，再接入终端应用；

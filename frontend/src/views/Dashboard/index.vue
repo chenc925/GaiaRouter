@@ -3,7 +3,10 @@
     <a-page-header title="仪表盘" />
 
     <!-- 顶部统计卡片（全局真实数据） -->
-    <a-row :gutter="16" class="stats-cards">
+    <a-row
+      :gutter="16"
+      class="stats-cards"
+    >
       <a-col :span="6">
         <a-card size="small">
           <a-statistic
@@ -41,44 +44,103 @@
     </a-row>
 
     <!-- 常用操作（优先展示） -->
-    <a-card title="常用操作" class="quick-actions" :bordered="false">
-      <a-space class="quick-actions-list" wrap :size="16">
-        <a-button type="primary" shape="round" @click="$router.push('/organizations/create')">
-          <template #icon><IconUserGroup /></template>
+    <a-card
+      title="常用操作"
+      class="quick-actions"
+      :bordered="false"
+    >
+      <a-space
+        class="quick-actions-list"
+        wrap
+        :size="16"
+      >
+        <a-button
+          type="primary"
+          shape="round"
+          @click="$router.push('/organizations/create')"
+        >
+          <template #icon>
+            <IconUserGroup />
+          </template>
           创建组织
         </a-button>
-        <a-button type="primary" shape="round" @click="$router.push('/api-keys/create')">
-          <template #icon><IconSettings /></template>
+        <a-button
+          type="primary"
+          shape="round"
+          @click="$router.push('/api-keys/create')"
+        >
+          <template #icon>
+            <IconSettings />
+          </template>
           创建 API Key
         </a-button>
-        <a-button type="primary" shape="round" @click="$router.push('/chat/test')">
-          <template #icon><IconMessage /></template>
+        <a-button
+          type="primary"
+          shape="round"
+          @click="$router.push('/chat/test')"
+        >
+          <template #icon>
+            <IconMessage />
+          </template>
           对话测试
         </a-button>
-        <a-button shape="round" @click="$router.push('/models')">
-          <template #icon><IconSettings /></template>
+        <a-button
+          shape="round"
+          @click="$router.push('/models')"
+        >
+          <template #icon>
+            <IconSettings />
+          </template>
           模型管理
         </a-button>
-        <a-button shape="round" @click="$router.push('/stats')">
-          <template #icon><IconBarChart /></template>
+        <a-button
+          shape="round"
+          @click="$router.push('/stats')"
+        >
+          <template #icon>
+            <IconBarChart />
+          </template>
           查看统计
         </a-button>
       </a-space>
     </a-card>
 
     <!-- 图表区域（真实数据：按提供商统计） -->
-    <a-row :gutter="16" class="charts-row">
-      <a-col :span="16" :xs="24">
-        <a-card title="按提供商请求数（最近 30 天）" :bordered="false" class="chart-card">
+    <a-row
+      :gutter="16"
+      class="charts-row"
+    >
+      <a-col
+        :span="16"
+        :xs="24"
+      >
+        <a-card
+          title="按提供商请求数（最近 30 天）"
+          :bordered="false"
+          class="chart-card"
+        >
           <div class="chart-body">
-            <VChart :option="requestsByProviderOption" autoresize />
+            <VChart
+              :option="requestsByProviderOption"
+              autoresize
+            />
           </div>
         </a-card>
       </a-col>
-      <a-col :span="8" :xs="24">
-        <a-card title="按提供商 Token / 费用" :bordered="false" class="chart-card">
+      <a-col
+        :span="8"
+        :xs="24"
+      >
+        <a-card
+          title="按提供商 Token / 费用"
+          :bordered="false"
+          class="chart-card"
+        >
           <div class="chart-body">
-            <VChart :option="tokensByProviderOption" autoresize />
+            <VChart
+              :option="tokensByProviderOption"
+              autoresize
+            />
           </div>
         </a-card>
       </a-col>

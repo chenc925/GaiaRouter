@@ -1,13 +1,29 @@
 <template>
   <div class="models-management">
-    <a-page-header title="模型管理" subtitle="管理可用的 AI 模型" />
+    <a-page-header
+      title="模型管理"
+      subtitle="管理可用的 AI 模型"
+    />
 
     <!-- 操作栏 -->
-    <a-card class="toolbar-card" :bordered="false">
+    <a-card
+      class="toolbar-card"
+      :bordered="false"
+    >
       <div class="toolbar-top">
-        <a-space :size="12" wrap>
-          <a-button type="primary" shape="round" @click="handleSync" :loading="syncing">
-            <template #icon><icon-sync /></template>
+        <a-space
+          :size="12"
+          wrap
+        >
+          <a-button
+            type="primary"
+            shape="round"
+            :loading="syncing"
+            @click="handleSync"
+          >
+            <template #icon>
+              <icon-sync />
+            </template>
             同步模型
           </a-button>
           <a-button
@@ -27,13 +43,19 @@
             批量禁用
           </a-button>
         </a-space>
-        <div class="toolbar-summary" v-if="models.length">
+        <div
+          v-if="models.length"
+          class="toolbar-summary"
+        >
           已选 {{ selectedIds.length }} 个 / 当前页 {{ models.length }} 个
         </div>
       </div>
 
       <div class="toolbar-bottom">
-        <a-space :size="12" wrap>
+        <a-space
+          :size="12"
+          wrap
+        >
           <a-select
             v-model="filters.is_free"
             placeholder="筛选"
@@ -41,8 +63,12 @@
             style="width: 140px"
             @change="loadModels"
           >
-            <a-option :value="true">仅免费</a-option>
-            <a-option :value="false">付费</a-option>
+            <a-option :value="true">
+              仅免费
+            </a-option>
+            <a-option :value="false">
+              付费
+            </a-option>
           </a-select>
           <a-select
             v-model="filters.enabled_only"
@@ -51,15 +77,23 @@
             style="width: 140px"
             @change="loadModels"
           >
-            <a-option :value="true">已启用</a-option>
-            <a-option :value="false">已禁用</a-option>
+            <a-option :value="true">
+              已启用
+            </a-option>
+            <a-option :value="false">
+              已禁用
+            </a-option>
           </a-select>
         </a-space>
       </div>
     </a-card>
 
     <!-- 模型列表 -->
-    <a-card class="models-table-card" :bordered="false" style="margin-top: 16px">
+    <a-card
+      class="models-table-card"
+      :bordered="false"
+      style="margin-top: 16px"
+    >
       <a-table
         :columns="columns"
         :data="models"
@@ -72,8 +106,12 @@
       >
         <template #name="{ record }">
           <div>
-            <div style="font-weight: 500">{{ record.name }}</div>
-            <div style="font-size: 12px; color: #86909c">{{ record.id }}</div>
+            <div style="font-weight: 500">
+              {{ record.name }}
+            </div>
+            <div style="font-size: 12px; color: #86909c">
+              {{ record.id }}
+            </div>
           </div>
         </template>
 
@@ -91,9 +129,24 @@
 
         <template #features="{ record }">
           <a-space>
-            <a-tag v-if="record.is_free" color="green">免费</a-tag>
-            <a-tag v-if="record.supports_vision" color="blue">视觉</a-tag>
-            <a-tag v-if="record.supports_function_calling" color="purple">函数</a-tag>
+            <a-tag
+              v-if="record.is_free"
+              color="green"
+            >
+              免费
+            </a-tag>
+            <a-tag
+              v-if="record.supports_vision"
+              color="blue"
+            >
+              视觉
+            </a-tag>
+            <a-tag
+              v-if="record.supports_function_calling"
+              color="purple"
+            >
+              函数
+            </a-tag>
           </a-space>
         </template>
 
@@ -132,14 +185,14 @@ const selectedIds = ref<string[]>([])
 
 const filters = reactive({
   is_free: undefined as boolean | undefined,
-  enabled_only: undefined as boolean | undefined,
+  enabled_only: undefined as boolean | undefined
 })
 
 const pagination = reactive({
   current: 1,
   pageSize: 50,
   total: 0,
-  showTotal: true,
+  showTotal: true
 })
 
 const columns = [
@@ -149,7 +202,7 @@ const columns = [
   { title: '定价', slotName: 'pricing', width: 180 },
   { title: '特性', slotName: 'features', width: 200 },
   { title: '启用', slotName: 'is_enabled', width: 100, align: 'center' },
-  { title: '同步时间', slotName: 'synced_at', width: 180 },
+  { title: '同步时间', slotName: 'synced_at', width: 180 }
 ]
 
 // Row selection 配置
@@ -171,7 +224,7 @@ const loadModels = async () => {
       page: pagination.current,
       limit: pagination.pageSize,
       is_free: filters.is_free,
-      enabled_only: filters.enabled_only,
+      enabled_only: filters.enabled_only
     }
     
     const response: any = await getAdminModels(params)

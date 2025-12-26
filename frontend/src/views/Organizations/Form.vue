@@ -7,23 +7,35 @@
 
     <a-card>
       <a-form
+        ref="formRef"
         :model="form"
         :rules="rules"
-        ref="formRef"
         layout="vertical"
         @submit="handleSubmit"
       >
-        <a-form-item field="name" label="组织名称">
-          <a-input v-model="form.name" placeholder="请输入组织名称" />
+        <a-form-item
+          field="name"
+          label="组织名称"
+        >
+          <a-input
+            v-model="form.name"
+            placeholder="请输入组织名称"
+          />
         </a-form-item>
-        <a-form-item field="description" label="描述">
+        <a-form-item
+          field="description"
+          label="描述"
+        >
           <a-textarea
             v-model="form.description"
             placeholder="请输入组织描述"
             :auto-size="{ minRows: 3, maxRows: 5 }"
           />
         </a-form-item>
-        <a-form-item field="monthly_requests_limit" label="月度请求次数限制">
+        <a-form-item
+          field="monthly_requests_limit"
+          label="月度请求次数限制"
+        >
           <a-input-number
             v-model="form.monthly_requests_limit"
             placeholder="请输入月度请求次数限制"
@@ -31,7 +43,10 @@
             style="width: 100%"
           />
         </a-form-item>
-        <a-form-item field="monthly_tokens_limit" label="月度Token限制">
+        <a-form-item
+          field="monthly_tokens_limit"
+          label="月度Token限制"
+        >
           <a-input-number
             v-model="form.monthly_tokens_limit"
             placeholder="请输入月度Token限制"
@@ -39,7 +54,10 @@
             style="width: 100%"
           />
         </a-form-item>
-        <a-form-item field="monthly_cost_limit" label="月度费用限制">
+        <a-form-item
+          field="monthly_cost_limit"
+          label="月度费用限制"
+        >
           <a-input-number
             v-model="form.monthly_cost_limit"
             placeholder="请输入月度费用限制"
@@ -50,10 +68,16 @@
         </a-form-item>
         <a-form-item>
           <a-space>
-            <a-button type="primary" html-type="submit" :loading="loading">
+            <a-button
+              type="primary"
+              html-type="submit"
+              :loading="loading"
+            >
               {{ isEdit ? '更新' : '创建' }}
             </a-button>
-            <a-button @click="$router.back()">取消</a-button>
+            <a-button @click="$router.back()">
+              取消
+            </a-button>
           </a-space>
         </a-form-item>
       </a-form>
