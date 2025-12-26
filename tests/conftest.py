@@ -29,6 +29,10 @@ def test_db_engine():
 @pytest.fixture(scope="function")
 def db_session(test_db_engine) -> Generator[Session, None, None]:
     """创建测试数据库会话（每个测试函数独立）"""
+    # 清空所有表
+    for table in reversed(Base.metadata.sorted_tables):
+        test_db_engine.execute(table.delete())
+
     TestingSessionLocal = sessionmaker(bind=test_db_engine)
     session = TestingSessionLocal()
 
