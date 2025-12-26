@@ -1,19 +1,10 @@
 <template>
   <div class="organization-detail">
-    <a-page-header
-      title="组织详情"
-      @back="$router.push('/organizations')"
-    >
+    <a-page-header title="组织详情" @back="$router.push('/organizations')">
       <template #extra>
         <a-space>
-          <a-button @click="handleEdit">
-            编辑
-          </a-button>
-          <a-button 
-            type="primary" 
-            :disabled="activeApiKeysCount > 0"
-            @click="handleAssignApiKey"
-          >
+          <a-button @click="handleEdit"> 编辑 </a-button>
+          <a-button type="primary" :disabled="activeApiKeysCount > 0" @click="handleAssignApiKey">
             <template #icon>
               <IconPlus />
             </template>
@@ -26,24 +17,15 @@
       </template>
     </a-page-header>
 
-    <a-card
-      v-if="organization"
-      :loading="organizationStore.loading"
-    >
-      <a-descriptions
-        :column="2"
-        bordered
-      >
+    <a-card v-if="organization" :loading="organizationStore.loading">
+      <a-descriptions :column="2" bordered>
         <a-descriptions-item label="组织ID">
           {{ organization.id }}
         </a-descriptions-item>
         <a-descriptions-item label="名称">
           {{ organization.name }}
         </a-descriptions-item>
-        <a-descriptions-item
-          label="描述"
-          :span="2"
-        >
+        <a-descriptions-item label="描述" :span="2">
           {{ organization.description || '-' }}
         </a-descriptions-item>
         <a-descriptions-item label="管理员用户ID">
@@ -72,14 +54,11 @@
       </a-descriptions>
     </a-card>
 
-    <a-card
-      title="API Keys"
-      style="margin-top: 16px"
-    >
+    <a-card title="API Keys" style="margin-top: 16px">
       <template #extra>
-        <a-button 
-          type="primary" 
-          size="small" 
+        <a-button
+          type="primary"
+          size="small"
           :disabled="activeApiKeysCount > 0"
           @click="handleAssignApiKey"
         >
@@ -102,24 +81,11 @@
         </template>
         <template #operations="{ record }">
           <a-space>
-            <a-button
-              type="text"
-              size="small"
-              @click="handleViewApiKey(record.id)"
-            >
+            <a-button type="text" size="small" @click="handleViewApiKey(record.id)">
               查看
             </a-button>
-            <a-popconfirm
-              content="确定要删除这个 API Key 吗？"
-              @ok="handleDeleteApiKey(record.id)"
-            >
-              <a-button
-                type="text"
-                size="small"
-                status="danger"
-              >
-                删除
-              </a-button>
+            <a-popconfirm content="确定要删除这个 API Key 吗？" @ok="handleDeleteApiKey(record.id)">
+              <a-button type="text" size="small" status="danger"> 删除 </a-button>
             </a-popconfirm>
           </a-space>
         </template>
@@ -229,4 +195,3 @@ onMounted(async () => {
   padding: 0;
 }
 </style>
-

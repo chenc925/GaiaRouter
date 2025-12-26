@@ -1,81 +1,49 @@
 <template>
   <div class="api-key-form">
-    <a-page-header
-      :title="isEdit ? '编辑 API Key' : '创建 API Key'"
-      @back="$router.back()"
-    />
+    <a-page-header :title="isEdit ? '编辑 API Key' : '创建 API Key'" @back="$router.back()" />
 
     <a-card>
-      <a-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        layout="vertical"
-      >
-        <a-form-item
-          v-if="!isEdit && !createdKey"
-          field="organization_id"
-          label="组织"
-        >
+      <a-form ref="formRef" :model="form" :rules="rules" layout="vertical">
+        <a-form-item v-if="!isEdit && !createdKey" field="organization_id" label="组织">
           <a-select
             v-model="form.organization_id"
             placeholder="请选择组织"
             :loading="organizationStore.loading"
             :disabled="!!organizationIdFromQuery"
           >
-            <a-option
-              v-for="org in organizationStore.organizations"
-              :key="org.id"
-              :value="org.id"
-            >
+            <a-option v-for="org in organizationStore.organizations" :key="org.id" :value="org.id">
               {{ org.name }}
             </a-option>
           </a-select>
         </a-form-item>
-        <a-form-item
-          v-if="createdKey"
-          field="key"
-          label="API Key（请妥善保存，仅显示一次）"
-        >
+        <a-form-item v-if="createdKey" field="key" label="API Key（请妥善保存，仅显示一次）">
           <a-textarea
             :model-value="createdKey.key"
             readonly
             :auto-size="{ minRows: 2, maxRows: 4 }"
-            style="font-family: 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace; font-size: 13px;"
+            style="
+              font-family: 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace;
+              font-size: 13px;
+            "
           />
           <template #extra>
-            <a-space style="margin-top: 12px;">
-              <a-button
-                type="primary"
-                size="small"
-                @click="copyKey"
-              >
+            <a-space style="margin-top: 12px">
+              <a-button type="primary" size="small" @click="copyKey">
                 <template #icon>
                   <icon-copy />
                 </template>
                 复制 API Key
               </a-button>
-              <a-button
-                size="small"
-                @click="$router.push('/api-keys')"
-              >
-                返回列表
-              </a-button>
+              <a-button size="small" @click="$router.push('/api-keys')"> 返回列表 </a-button>
             </a-space>
           </template>
         </a-form-item>
         <a-form-item v-if="!createdKey">
           <a-space>
-            <a-button
-              type="primary"
-              :loading="loading"
-              @click="handleSubmit"
-            >
+            <a-button type="primary" :loading="loading" @click="handleSubmit">
               {{ isEdit ? '更新' : '生成 API Key' }}
             </a-button>
-            <a-button @click="$router.back()">
-              取消
-            </a-button>
+            <a-button @click="$router.back()"> 取消 </a-button>
           </a-space>
         </a-form-item>
       </a-form>
@@ -124,7 +92,7 @@ const handleSubmit = async () => {
     }
 
     loading.value = true
-    
+
     const submitData = {
       organization_id: form.value.organization_id
     }
@@ -181,7 +149,7 @@ onMounted(async () => {
       form.value.organization_id = organizationIdFromQuery.value
     }
   }
-  
+
   // 编辑模式不再支持，因为一个组织只能有一个API Key
   if (isEdit.value) {
     Message.warning('不支持编辑API Key，请删除后重新创建')
@@ -195,4 +163,3 @@ onMounted(async () => {
   padding: 0;
 }
 </style>
-

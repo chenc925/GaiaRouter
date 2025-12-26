@@ -1,15 +1,14 @@
 import apiClient from '@/utils/request'
-import type { Organization, CreateOrganizationRequest, UpdateOrganizationRequest } from '@/types/organization'
+import type {
+  Organization,
+  CreateOrganizationRequest,
+  UpdateOrganizationRequest
+} from '@/types/organization'
 import type { ListResponse } from '@/types/api'
 import type { KeyStatsResponse } from '@/types/stats'
 
 export const organizationsApi = {
-  getList: (params?: {
-    page?: number
-    limit?: number
-    status?: string
-    search?: string
-  }) => {
+  getList: (params?: { page?: number; limit?: number; status?: string; search?: string }) => {
     return apiClient.get<ListResponse<Organization>>('/v1/organizations', { params })
   },
 
@@ -29,12 +28,14 @@ export const organizationsApi = {
     return apiClient.delete(`/v1/organizations/${id}`)
   },
 
-  getStats: (id: string, params?: {
-    start_date?: string
-    end_date?: string
-    group_by?: string
-  }) => {
+  getStats: (
+    id: string,
+    params?: {
+      start_date?: string
+      end_date?: string
+      group_by?: string
+    }
+  ) => {
     return apiClient.get<KeyStatsResponse>(`/v1/organizations/${id}/stats`, { params })
   }
 }
-

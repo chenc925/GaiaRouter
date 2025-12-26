@@ -22,11 +22,14 @@ export const useStatsStore = defineStore('stats', () => {
     }
   }
 
-  const fetchOrganizationStats = async (id: string, params?: {
-    start_date?: string
-    end_date?: string
-    group_by?: string
-  }) => {
+  const fetchOrganizationStats = async (
+    id: string,
+    params?: {
+      start_date?: string
+      end_date?: string
+      group_by?: string
+    }
+  ) => {
     loading.value = true
     try {
       const stats = await statsApi.getKeyStats(id, params)
@@ -36,11 +39,14 @@ export const useStatsStore = defineStore('stats', () => {
     }
   }
 
-  const fetchApiKeyStats = async (keyId: string, params?: {
-    start_date?: string
-    end_date?: string
-    group_by?: string
-  }) => {
+  const fetchApiKeyStats = async (
+    keyId: string,
+    params?: {
+      start_date?: string
+      end_date?: string
+      group_by?: string
+    }
+  ) => {
     loading.value = true
     try {
       const stats = await statsApi.getKeyStats(keyId, params)
@@ -60,4 +66,3 @@ export const useStatsStore = defineStore('stats', () => {
     fetchApiKeyStats
   }
 })
-

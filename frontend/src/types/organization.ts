@@ -28,4 +28,3 @@ export interface UpdateOrganizationRequest {
   monthly_tokens_limit?: number
   monthly_cost_limit?: number
 }
-

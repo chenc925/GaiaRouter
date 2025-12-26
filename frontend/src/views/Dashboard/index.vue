@@ -3,100 +3,57 @@
     <a-page-header title="仪表盘" />
 
     <!-- 顶部统计卡片（全局真实数据） -->
-    <a-row
-      :gutter="16"
-      class="stats-cards"
-    >
+    <a-row :gutter="16" class="stats-cards">
       <a-col :span="6">
         <a-card size="small">
-          <a-statistic
-            title="总请求数"
-            :value="totalRequests"
-          />
+          <a-statistic title="总请求数" :value="totalRequests" />
         </a-card>
       </a-col>
       <a-col :span="6">
         <a-card size="small">
-          <a-statistic
-            title="总 Token 数"
-            :value="totalTokens"
-          />
+          <a-statistic title="总 Token 数" :value="totalTokens" />
         </a-card>
       </a-col>
       <a-col :span="6">
         <a-card size="small">
-          <a-statistic
-            title="总费用"
-            :value="totalCost"
-            :precision="2"
-            prefix="¥"
-          />
+          <a-statistic title="总费用" :value="totalCost" :precision="2" prefix="¥" />
         </a-card>
       </a-col>
       <a-col :span="6">
         <a-card size="small">
-          <a-statistic
-            title="活跃 API Key 数"
-            :value="activeKeys"
-          />
+          <a-statistic title="活跃 API Key 数" :value="activeKeys" />
         </a-card>
       </a-col>
     </a-row>
 
     <!-- 常用操作（优先展示） -->
-    <a-card
-      title="常用操作"
-      class="quick-actions"
-      :bordered="false"
-    >
-      <a-space
-        class="quick-actions-list"
-        wrap
-        :size="16"
-      >
-        <a-button
-          type="primary"
-          shape="round"
-          @click="$router.push('/organizations/create')"
-        >
+    <a-card title="常用操作" class="quick-actions" :bordered="false">
+      <a-space class="quick-actions-list" wrap :size="16">
+        <a-button type="primary" shape="round" @click="$router.push('/organizations/create')">
           <template #icon>
             <IconUserGroup />
           </template>
           创建组织
         </a-button>
-        <a-button
-          type="primary"
-          shape="round"
-          @click="$router.push('/api-keys/create')"
-        >
+        <a-button type="primary" shape="round" @click="$router.push('/api-keys/create')">
           <template #icon>
             <IconSettings />
           </template>
           创建 API Key
         </a-button>
-        <a-button
-          type="primary"
-          shape="round"
-          @click="$router.push('/chat/test')"
-        >
+        <a-button type="primary" shape="round" @click="$router.push('/chat/test')">
           <template #icon>
             <IconMessage />
           </template>
           对话测试
         </a-button>
-        <a-button
-          shape="round"
-          @click="$router.push('/models')"
-        >
+        <a-button shape="round" @click="$router.push('/models')">
           <template #icon>
             <IconSettings />
           </template>
           模型管理
         </a-button>
-        <a-button
-          shape="round"
-          @click="$router.push('/stats')"
-        >
+        <a-button shape="round" @click="$router.push('/stats')">
           <template #icon>
             <IconBarChart />
           </template>
@@ -106,41 +63,18 @@
     </a-card>
 
     <!-- 图表区域（真实数据：按提供商统计） -->
-    <a-row
-      :gutter="16"
-      class="charts-row"
-    >
-      <a-col
-        :span="16"
-        :xs="24"
-      >
-        <a-card
-          title="按提供商请求数（最近 30 天）"
-          :bordered="false"
-          class="chart-card"
-        >
+    <a-row :gutter="16" class="charts-row">
+      <a-col :span="16" :xs="24">
+        <a-card title="按提供商请求数（最近 30 天）" :bordered="false" class="chart-card">
           <div class="chart-body">
-            <VChart
-              :option="requestsByProviderOption"
-              autoresize
-            />
+            <VChart :option="requestsByProviderOption" autoresize />
           </div>
         </a-card>
       </a-col>
-      <a-col
-        :span="8"
-        :xs="24"
-      >
-        <a-card
-          title="按提供商 Token / 费用"
-          :bordered="false"
-          class="chart-card"
-        >
+      <a-col :span="8" :xs="24">
+        <a-card title="按提供商 Token / 费用" :bordered="false" class="chart-card">
           <div class="chart-body">
-            <VChart
-              :option="tokensByProviderOption"
-              autoresize
-            />
+            <VChart :option="tokensByProviderOption" autoresize />
           </div>
         </a-card>
       </a-col>
@@ -178,8 +112,8 @@ const totalCost = computed(() => summary.value?.total_cost ?? 0)
 const activeKeys = computed(() => summary.value?.active_keys ?? 0)
 
 const requestsByProviderOption = computed<any>(() => {
-  const providers = providerStats.value.map((p) => p.provider || '未知')
-  const requests = providerStats.value.map((p) => p.requests || 0)
+  const providers = providerStats.value.map(p => p.provider || '未知')
+  const requests = providerStats.value.map(p => p.requests || 0)
 
   return {
     tooltip: {
@@ -216,9 +150,9 @@ const requestsByProviderOption = computed<any>(() => {
 })
 
 const tokensByProviderOption = computed<any>(() => {
-  const providers = providerStats.value.map((p) => p.provider || '未知')
-  const tokens = providerStats.value.map((p) => p.total_tokens || 0)
-  const costs = providerStats.value.map((p) => p.cost || 0)
+  const providers = providerStats.value.map(p => p.provider || '未知')
+  const tokens = providerStats.value.map(p => p.total_tokens || 0)
+  const costs = providerStats.value.map(p => p.cost || 0)
 
   return {
     tooltip: {
@@ -327,4 +261,3 @@ onMounted(() => {
   }
 }
 </style>
-

@@ -1,56 +1,32 @@
 <template>
   <div class="chat-test">
-    <a-page-header
-      title="对话测试"
-      subtitle="使用组织API Key进行AI模型对话测试"
-    />
-    
-    <a-card
-      class="config-card"
-      title="配置"
-      :bordered="false"
-    >
+    <a-page-header title="对话测试" subtitle="使用组织API Key进行AI模型对话测试" />
+
+    <a-card class="config-card" title="配置" :bordered="false">
       <template #extra>
-        <a-button
-          type="text"
-          size="small"
-          @click="$router.push('/api-usage')"
-        >
+        <a-button type="text" size="small" @click="$router.push('/api-usage')">
           查看终端 API 使用说明
         </a-button>
       </template>
-      <a-form
-        :model="config"
-        layout="vertical"
-      >
+      <a-form :model="config" layout="vertical">
         <a-row :gutter="16">
           <a-col :span="8">
-            <a-form-item
-              label="API Key"
-              required
-            >
+            <a-form-item label="API Key" required>
               <a-select
                 v-model="config.apiKeyId"
                 placeholder="选择API Key"
                 :loading="apiKeysLoading"
                 @change="handleApiKeyChange"
               >
-                <a-option
-                  v-for="key in apiKeys"
-                  :key="key.id"
-                  :value="key.id"
-                >
+                <a-option v-for="key in apiKeys" :key="key.id" :value="key.id">
                   {{ key.key || key.name }}
                 </a-option>
               </a-select>
             </a-form-item>
           </a-col>
-          
+
           <a-col :span="8">
-            <a-form-item
-              label="模型"
-              required
-            >
+            <a-form-item label="模型" required>
               <a-select
                 v-model="config.model"
                 placeholder="选择模型"
@@ -58,17 +34,13 @@
                 :disabled="!selectedApiKey"
                 allow-search
               >
-                <a-option
-                  v-for="model in models"
-                  :key="model.id"
-                  :value="model.id"
-                >
+                <a-option v-for="model in models" :key="model.id" :value="model.id">
                   {{ model.id }}
                 </a-option>
               </a-select>
             </a-form-item>
           </a-col>
-          
+
           <a-col :span="4">
             <a-form-item label="Temperature">
               <a-input-number
@@ -80,15 +52,10 @@
               />
             </a-form-item>
           </a-col>
-          
+
           <a-col :span="4">
             <a-form-item label="Max Tokens">
-              <a-input-number
-                v-model="config.maxTokens"
-                :min="1"
-                :max="4096"
-                style="width: 100%"
-              />
+              <a-input-number v-model="config.maxTokens" :min="1" :max="4096" style="width: 100%" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -103,37 +70,31 @@
       </a-form>
     </a-card>
 
-    <a-card
-      class="chat-card"
-      :bordered="false"
-    >
+    <a-card class="chat-card" :bordered="false">
       <div class="chat-container">
-        <div
-          ref="messagesContainer"
-          class="messages-container"
-        >
+        <div ref="messagesContainer" class="messages-container">
           <div
             v-for="(message, index) in messages"
             :key="index"
             :class="['message-item', `message-${message.role}`]"
           >
             <div class="message-role">
-              {{ message.role === 'user' ? '用户' : message.role === 'assistant' ? '助手' : '系统' }}
+              {{
+                message.role === 'user' ? '用户' : message.role === 'assistant' ? '助手' : '系统'
+              }}
             </div>
             <div class="message-content">
               <template v-if="typeof message.content === 'string'">
                 {{ message.content }}
                 <span
-                  v-if="isStreaming && message.role === 'assistant' && index === messages.length - 1"
+                  v-if="
+                    isStreaming && message.role === 'assistant' && index === messages.length - 1
+                  "
                   class="streaming-caret"
                 />
               </template>
               <template v-else>
-                <div
-                  v-for="(part, idx) in message.content"
-                  :key="idx"
-                  class="content-part"
-                >
+                <div v-for="(part, idx) in message.content" :key="idx" class="content-part">
                   <div v-if="part.type === 'text'">
                     {{ part.text }}
                   </div>
@@ -141,25 +102,18 @@
                     v-else-if="part.type === 'image_url'"
                     :src="part.image_url?.url"
                     class="message-image"
-                  >
+                  />
                 </div>
               </template>
             </div>
           </div>
-          
-          <div
-            v-if="loading && !isStreaming"
-            class="message-item message-assistant"
-          >
-            <div class="message-role">
-              助手
-            </div>
-            <div class="message-content">
-              <a-spin size="small" /> 思考中...
-            </div>
+
+          <div v-if="loading && !isStreaming" class="message-item message-assistant">
+            <div class="message-role">助手</div>
+            <div class="message-content"><a-spin size="small" /> 思考中...</div>
           </div>
         </div>
-        
+
         <div class="input-container">
           <a-upload
             :file-list="imageFiles"
@@ -173,47 +127,31 @@
             <template #upload-button>
               <div class="upload-btn">
                 <icon-plus />
-                <div style="margin-top: 8px">
-                  添加图片
-                </div>
+                <div style="margin-top: 8px">添加图片</div>
               </div>
             </template>
           </a-upload>
-          
+
           <a-textarea
             v-model="userInput"
             placeholder="输入消息... (支持多模态输入，Ctrl+Enter发送)"
             :auto-size="{ minRows: 3, maxRows: 6 }"
             @keydown.enter="handleKeyDown"
           />
-          
+
           <div class="input-actions">
-            <a-button @click="handleClear">
-              清空对话
-            </a-button>
-            <a-button
-              type="primary"
-              :loading="loading"
-              :disabled="!canSend"
-              @click="handleSend"
-            >
+            <a-button @click="handleClear"> 清空对话 </a-button>
+            <a-button type="primary" :loading="loading" :disabled="!canSend" @click="handleSend">
               发送
             </a-button>
           </div>
         </div>
       </div>
     </a-card>
-    
+
     <!-- 图片预览 -->
-    <a-modal
-      :visible="previewVisible"
-      :footer="null"
-      @cancel="previewVisible = false"
-    >
-      <img
-        :src="previewImage"
-        style="width: 100%"
-      >
+    <a-modal :visible="previewVisible" :footer="null" @cancel="previewVisible = false">
+      <img :src="previewImage" style="width: 100%" />
     </a-modal>
   </div>
 </template>
@@ -223,7 +161,13 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { IconPlus } from '@arco-design/web-vue/es/icon'
 import { useApiKeyStore } from '@/stores/apiKeys'
-import { getModels, sendChatMessage, sendChatMessageStream, type ChatMessage, type ContentPart } from '@/api/chat'
+import {
+  getModels,
+  sendChatMessage,
+  sendChatMessageStream,
+  type ChatMessage,
+  type ContentPart
+} from '@/api/chat'
 import type { FileItem } from '@arco-design/web-vue'
 
 const apiKeyStore = useApiKeyStore()
@@ -260,11 +204,13 @@ const previewImage = ref('')
 
 // 是否可以发送
 const canSend = computed(() => {
-  return !loading.value &&
-         !isStreaming.value &&
-         config.value.apiKeyId &&
-         config.value.model &&
-         (userInput.value.trim() || imageFiles.value.length > 0)
+  return (
+    !loading.value &&
+    !isStreaming.value &&
+    config.value.apiKeyId &&
+    config.value.model &&
+    (userInput.value.trim() || imageFiles.value.length > 0)
+  )
 })
 
 // 加载API Keys
@@ -284,7 +230,7 @@ const loadApiKeys = async () => {
 // 加载模型列表
 const loadModels = async () => {
   if (!selectedApiKey.value) return
-  
+
   modelsLoading.value = true
   try {
     // 使用选中的 API Key
@@ -313,13 +259,13 @@ const handleUploadChange = (fileList: FileItem[], currentFile: FileItem) => {
     Message.error('只能上传图片文件！')
     return
   }
-  
+
   // 验证文件大小
   if (currentFile.file && currentFile.file.size / 1024 / 1024 > 5) {
     Message.error('图片大小不能超过5MB！')
     return
   }
-  
+
   // 转换为base64
   if (currentFile.file && currentFile.status === 'init') {
     const reader = new FileReader()
@@ -350,18 +296,18 @@ const handleKeyDown = (e: KeyboardEvent) => {
 // 发送消息
 const handleSend = async () => {
   if (!canSend.value) return
-  
+
   loading.value = true
   isStreaming.value = !!config.value.stream
-  
+
   try {
     // 构建消息内容
     let content: string | ContentPart[]
-    
+
     if (imageFiles.value.length > 0) {
       // 多模态消息
       content = []
-      
+
       // 添加文本
       if (userInput.value.trim()) {
         content.push({
@@ -369,7 +315,7 @@ const handleSend = async () => {
           text: userInput.value.trim()
         })
       }
-      
+
       // 添加图片
       for (const file of imageFiles.value) {
         content.push({
@@ -383,22 +329,22 @@ const handleSend = async () => {
       // 纯文本消息
       content = userInput.value.trim()
     }
-    
+
     // 添加用户消息
     const userMessage: ChatMessage = {
       role: 'user',
       content
     }
     messages.value.push(userMessage)
-    
+
     // 清空输入
     userInput.value = ''
     imageFiles.value = []
-    
+
     // 滚动到底部
     await nextTick()
     scrollToBottom()
-    
+
     if (config.value.stream) {
       // 流式模式：先插入一个空的助手消息占位
       const assistantMessage: ChatMessage = {
@@ -417,7 +363,7 @@ const handleSend = async () => {
           max_tokens: config.value.maxTokens
         },
         selectedApiKey.value.key,
-        (delta) => {
+        delta => {
           if (typeof assistantMessage.content === 'string') {
             assistantMessage.content += delta
             messages.value[messages.value.length - 1] = { ...assistantMessage }
@@ -441,7 +387,7 @@ const handleSend = async () => {
         },
         selectedApiKey.value.key
       )
-      
+
       // 添加助手回复
       if (response.choices && response.choices.length > 0) {
         const assistantMessage: ChatMessage = {
@@ -449,13 +395,12 @@ const handleSend = async () => {
           content: response.choices[0].message.content
         }
         messages.value.push(assistantMessage)
-        
+
         // 滚动到底部
         await nextTick()
         scrollToBottom()
       }
     }
-    
   } catch (error: any) {
     console.error('Failed to send message:', error)
     Message.error(error?.response?.data?.error?.message || error?.message || '发送消息失败')

@@ -2,10 +2,7 @@
   <div class="api-keys-list">
     <a-page-header title="API Key 管理">
       <template #extra>
-        <a-button
-          type="primary"
-          @click="$router.push('/api-keys/create')"
-        >
+        <a-button type="primary" @click="$router.push('/api-keys/create')">
           <template #icon>
             <IconPlus />
           </template>
@@ -15,11 +12,7 @@
     </a-page-header>
 
     <a-card>
-      <a-space
-        direction="vertical"
-        :size="16"
-        style="width: 100%"
-      >
+      <a-space direction="vertical" :size="16" style="width: 100%">
         <a-space>
           <a-input
             v-model="searchText"
@@ -35,15 +28,9 @@
             style="width: 150px"
             @change="handleSearch"
           >
-            <a-option value="active">
-              活跃
-            </a-option>
-            <a-option value="inactive">
-              停用
-            </a-option>
-            <a-option value="expired">
-              过期
-            </a-option>
+            <a-option value="active"> 活跃 </a-option>
+            <a-option value="inactive"> 停用 </a-option>
+            <a-option value="expired"> 过期 </a-option>
           </a-select>
           <a-select
             v-model="organizationFilter"
@@ -53,20 +40,11 @@
             :loading="organizationStore.loading"
             @change="handleSearch"
           >
-            <a-option
-              v-for="org in organizationStore.organizations"
-              :key="org.id"
-              :value="org.id"
-            >
+            <a-option v-for="org in organizationStore.organizations" :key="org.id" :value="org.id">
               {{ org.name }}
             </a-option>
           </a-select>
-          <a-button
-            type="primary"
-            @click="handleSearch"
-          >
-            搜索
-          </a-button>
+          <a-button type="primary" @click="handleSearch"> 搜索 </a-button>
         </a-space>
 
         <a-table
@@ -79,17 +57,9 @@
         >
           <template #key="{ record }">
             <a-space size="small">
-              <span
-                v-if="record.key"
-                class="api-key-value"
-              >{{ maskApiKey(record.key) }}</span>
+              <span v-if="record.key" class="api-key-value">{{ maskApiKey(record.key) }}</span>
               <span v-else>-</span>
-              <a-button
-                v-if="record.key"
-                type="text"
-                size="mini"
-                @click="copyKey(record.key)"
-              >
+              <a-button v-if="record.key" type="text" size="mini" @click="copyKey(record.key)">
                 复制
               </a-button>
             </a-space>
@@ -101,24 +71,9 @@
           </template>
           <template #operations="{ record }">
             <a-space>
-              <a-button
-                type="text"
-                size="small"
-                @click="handleView(record.id)"
-              >
-                查看
-              </a-button>
-              <a-popconfirm
-                content="确定要删除这个 API Key 吗？"
-                @ok="handleDelete(record.id)"
-              >
-                <a-button
-                  type="text"
-                  size="small"
-                  status="danger"
-                >
-                  删除
-                </a-button>
+              <a-button type="text" size="small" @click="handleView(record.id)"> 查看 </a-button>
+              <a-popconfirm content="确定要删除这个 API Key 吗？" @ok="handleDelete(record.id)">
+                <a-button type="text" size="small" status="danger"> 删除 </a-button>
               </a-popconfirm>
             </a-space>
           </template>
@@ -253,4 +208,3 @@ onMounted(async () => {
   font-size: 12px;
 }
 </style>
-

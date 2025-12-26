@@ -2,10 +2,7 @@
   <div class="organizations-list">
     <a-page-header title="组织管理">
       <template #extra>
-        <a-button
-          type="primary"
-          @click="$router.push('/organizations/create')"
-        >
+        <a-button type="primary" @click="$router.push('/organizations/create')">
           <template #icon>
             <IconPlus />
           </template>
@@ -15,11 +12,7 @@
     </a-page-header>
 
     <a-card>
-      <a-space
-        direction="vertical"
-        :size="16"
-        style="width: 100%"
-      >
+      <a-space direction="vertical" :size="16" style="width: 100%">
         <a-space>
           <a-input
             v-model="searchText"
@@ -35,19 +28,10 @@
             style="width: 150px"
             @change="handleSearch"
           >
-            <a-option value="active">
-              活跃
-            </a-option>
-            <a-option value="inactive">
-              停用
-            </a-option>
+            <a-option value="active"> 活跃 </a-option>
+            <a-option value="inactive"> 停用 </a-option>
           </a-select>
-          <a-button
-            type="primary"
-            @click="handleSearch"
-          >
-            搜索
-          </a-button>
+          <a-button type="primary" @click="handleSearch"> 搜索 </a-button>
         </a-space>
 
         <a-table
@@ -65,31 +49,10 @@
           </template>
           <template #operations="{ record }">
             <a-space>
-              <a-button
-                type="text"
-                size="small"
-                @click="handleView(record.id)"
-              >
-                查看
-              </a-button>
-              <a-button
-                type="text"
-                size="small"
-                @click="handleEdit(record.id)"
-              >
-                编辑
-              </a-button>
-              <a-popconfirm
-                content="确定要删除这个组织吗？"
-                @ok="handleDelete(record.id)"
-              >
-                <a-button
-                  type="text"
-                  size="small"
-                  status="danger"
-                >
-                  删除
-                </a-button>
+              <a-button type="text" size="small" @click="handleView(record.id)"> 查看 </a-button>
+              <a-button type="text" size="small" @click="handleEdit(record.id)"> 编辑 </a-button>
+              <a-popconfirm content="确定要删除这个组织吗？" @ok="handleDelete(record.id)">
+                <a-button type="text" size="small" status="danger"> 删除 </a-button>
               </a-popconfirm>
             </a-space>
           </template>
@@ -184,4 +147,3 @@ onMounted(() => {
   padding: 0;
 }
 </style>
-

@@ -1,26 +1,12 @@
 <template>
   <div class="models-management">
-    <a-page-header
-      title="模型管理"
-      subtitle="管理可用的 AI 模型"
-    />
+    <a-page-header title="模型管理" subtitle="管理可用的 AI 模型" />
 
     <!-- 操作栏 -->
-    <a-card
-      class="toolbar-card"
-      :bordered="false"
-    >
+    <a-card class="toolbar-card" :bordered="false">
       <div class="toolbar-top">
-        <a-space
-          :size="12"
-          wrap
-        >
-          <a-button
-            type="primary"
-            shape="round"
-            :loading="syncing"
-            @click="handleSync"
-          >
+        <a-space :size="12" wrap>
+          <a-button type="primary" shape="round" :loading="syncing" @click="handleSync">
             <template #icon>
               <icon-sync />
             </template>
@@ -43,19 +29,13 @@
             批量禁用
           </a-button>
         </a-space>
-        <div
-          v-if="models.length"
-          class="toolbar-summary"
-        >
+        <div v-if="models.length" class="toolbar-summary">
           已选 {{ selectedIds.length }} 个 / 当前页 {{ models.length }} 个
         </div>
       </div>
 
       <div class="toolbar-bottom">
-        <a-space
-          :size="12"
-          wrap
-        >
+        <a-space :size="12" wrap>
           <a-select
             v-model="filters.is_free"
             placeholder="筛选"
@@ -63,12 +43,8 @@
             style="width: 140px"
             @change="loadModels"
           >
-            <a-option :value="true">
-              仅免费
-            </a-option>
-            <a-option :value="false">
-              付费
-            </a-option>
+            <a-option :value="true"> 仅免费 </a-option>
+            <a-option :value="false"> 付费 </a-option>
           </a-select>
           <a-select
             v-model="filters.enabled_only"
@@ -77,23 +53,15 @@
             style="width: 140px"
             @change="loadModels"
           >
-            <a-option :value="true">
-              已启用
-            </a-option>
-            <a-option :value="false">
-              已禁用
-            </a-option>
+            <a-option :value="true"> 已启用 </a-option>
+            <a-option :value="false"> 已禁用 </a-option>
           </a-select>
         </a-space>
       </div>
     </a-card>
 
     <!-- 模型列表 -->
-    <a-card
-      class="models-table-card"
-      :bordered="false"
-      style="margin-top: 16px"
-    >
+    <a-card class="models-table-card" :bordered="false" style="margin-top: 16px">
       <a-table
         :columns="columns"
         :data="models"
@@ -129,31 +97,16 @@
 
         <template #features="{ record }">
           <a-space>
-            <a-tag
-              v-if="record.is_free"
-              color="green"
-            >
-              免费
-            </a-tag>
-            <a-tag
-              v-if="record.supports_vision"
-              color="blue"
-            >
-              视觉
-            </a-tag>
-            <a-tag
-              v-if="record.supports_function_calling"
-              color="purple"
-            >
-              函数
-            </a-tag>
+            <a-tag v-if="record.is_free" color="green"> 免费 </a-tag>
+            <a-tag v-if="record.supports_vision" color="blue"> 视觉 </a-tag>
+            <a-tag v-if="record.supports_function_calling" color="purple"> 函数 </a-tag>
           </a-space>
         </template>
 
         <template #is_enabled="{ record }">
           <a-switch
             :model-value="record.is_enabled"
-            @change="(value) => handleToggle(record, value)"
+            @change="value => handleToggle(record, value)"
           />
         </template>
 
@@ -169,13 +122,13 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { IconSync } from '@arco-design/web-vue/es/icon'
-import { 
-  syncModels, 
-  getAdminModels, 
-  enableModel, 
+import {
+  syncModels,
+  getAdminModels,
+  enableModel,
   disableModel,
   batchUpdateModels,
-  type Model 
+  type Model
 } from '@/api/adminModels'
 
 const loading = ref(false)
@@ -226,7 +179,7 @@ const loadModels = async () => {
       is_free: filters.is_free,
       enabled_only: filters.enabled_only
     }
-    
+
     const response: any = await getAdminModels(params)
     models.value = response.data
     pagination.total = response.pagination.total

@@ -24,4 +24,3 @@ export interface UpdateApiKeyRequest {
   status?: 'active' | 'inactive'
   expires_at?: string
 }
-

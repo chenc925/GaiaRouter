@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { organizationsApi } from '@/api/organizations'
-import type { Organization, CreateOrganizationRequest, UpdateOrganizationRequest } from '@/types/organization'
+import type {
+  Organization,
+  CreateOrganizationRequest,
+  UpdateOrganizationRequest
+} from '@/types/organization'
 import type { Pagination } from '@/types/api'
 
 export const useOrganizationStore = defineStore('organizations', () => {
@@ -93,4 +97,3 @@ export const useOrganizationStore = defineStore('organizations', () => {
     deleteOrganization
   }
 })
-

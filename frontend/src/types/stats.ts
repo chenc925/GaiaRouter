@@ -58,4 +58,3 @@ export interface GlobalStatsResponse {
   }
   by_provider: ProviderStats[]
 }
-

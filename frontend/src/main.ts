@@ -13,4 +13,3 @@ app.use(router)
 app.use(ArcoVue)
 
 app.mount('#app')
-

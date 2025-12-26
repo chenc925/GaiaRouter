@@ -18,7 +18,7 @@ class ApiClient {
 
     // 请求拦截器
     this.axiosInstance.interceptors.request.use(
-      (config) => {
+      config => {
         // 如果请求头中没有 Authorization，则添加用户 token
         // 这样可以让测试页面传入的 API Key 不被覆盖
         if (!config.headers.Authorization) {
@@ -29,7 +29,7 @@ class ApiClient {
         }
         return config
       },
-      (error) => {
+      error => {
         return Promise.reject(error)
       }
     )
@@ -39,16 +39,16 @@ class ApiClient {
       (response: AxiosResponse) => {
         return response.data
       },
-      (error) => {
+      error => {
         // 统一错误处理
         if (error.response) {
           const { status, data } = error.response
-          
+
           if (status === 401) {
             // 如果是 API Key 认证失败，不要跳转登录页
             // 只有用户 token 认证失败才跳转
             const isApiKeyAuth = error.config?.headers?.Authorization?.startsWith('Bearer sk-or-')
-            
+
             if (!isApiKeyAuth) {
               // 未授权，清除token并跳转到登录页
               localStorage.removeItem('token')
@@ -72,7 +72,7 @@ class ApiClient {
         } else {
           Message.error('网络错误，请检查网络连接')
         }
-        
+
         return Promise.reject(error)
       }
     )
@@ -100,4 +100,3 @@ class ApiClient {
 }
 
 export default new ApiClient()
-

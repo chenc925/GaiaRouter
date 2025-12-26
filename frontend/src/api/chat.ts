@@ -12,14 +12,14 @@ const apiBaseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
  */
 export function getModels(apiKey?: string) {
   const config: any = {}
-  
+
   // 如果提供了 API Key，添加到请求头
   if (apiKey) {
     config.headers = {
-      'Authorization': `Bearer ${apiKey}`
+      Authorization: `Bearer ${apiKey}`
     }
   }
-  
+
   return request.get('/v1/models', config)
 }
 

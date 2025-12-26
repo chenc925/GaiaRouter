@@ -30,12 +30,14 @@ export const apiKeysApi = {
     return apiClient.delete(`/v1/api-keys/${id}`)
   },
 
-  getStats: (id: string, params?: {
-    start_date?: string
-    end_date?: string
-    group_by?: string
-  }) => {
+  getStats: (
+    id: string,
+    params?: {
+      start_date?: string
+      end_date?: string
+      group_by?: string
+    }
+  ) => {
     return apiClient.get<KeyStatsResponse>(`/v1/api-keys/${id}/stats`, { params })
   }
 }
-

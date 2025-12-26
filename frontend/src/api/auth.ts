@@ -17,4 +17,3 @@ export const authApi = {
     return apiClient.post<LoginResponse>('/v1/admin/login', data)
   }
 }
-
