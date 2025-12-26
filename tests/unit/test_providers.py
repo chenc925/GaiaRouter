@@ -135,6 +135,7 @@ class TestOpenAIProvider:
             mock_response.json.return_value = {
                 "id": "chatcmpl-123",
                 "object": "chat.completion",
+                "model": "gpt-4",
                 "choices": [
                     {
                         "message": {"role": "assistant", "content": "Hello!"},

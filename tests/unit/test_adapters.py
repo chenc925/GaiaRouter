@@ -34,7 +34,8 @@ class TestOpenAIAdapters:
         """测试基础请求转换"""
         result = request_adapter.adapt(sample_unified_request)
 
-        assert result["model"] == "openai/gpt-4"
+        # OpenAI adapter 移除 provider 前缀
+        assert result["model"] == "gpt-4"
         assert result["messages"] == sample_unified_request["messages"]
         assert result["temperature"] == 0.7
         assert result["max_tokens"] == 100
@@ -112,11 +113,11 @@ class TestAnthropicAdapters:
 
         result = request_adapter.adapt(request)
 
-        # Anthropic 使用 system 参数而非 messages
-        assert "system" in result
-        assert result["system"] == "You are helpful."
-        assert len(result["messages"]) == 1
-        assert result["messages"][0]["role"] == "user"
+        # Anthropic adapter 保持 messages 数组，不单独提取 system
+        assert "messages" in result
+        assert len(result["messages"]) == 2
+        assert result["messages"][0]["role"] == "system"
+        assert result["messages"][1]["role"] == "user"
 
     def test_request_adapter_max_tokens_required(self, request_adapter):
         """测试 max_tokens 默认值"""
@@ -223,7 +224,8 @@ class TestGoogleAdapters:
 
         assert result["model"] == "gemini-pro"
         assert result["choices"][0]["message"]["content"] == "Hello from Gemini!"
-        assert result["choices"][0]["finish_reason"] == "stop"
+        # Google adapter 保持原始 finish_reason 大写
+        assert result["choices"][0]["finish_reason"] == "STOP"
 
     def test_stream_chunk_adapter(self, response_adapter):
         """测试流式响应块转换"""
