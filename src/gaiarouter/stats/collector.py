@@ -5,10 +5,11 @@
 """
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Optional
 
 from ..database.connection import get_db
-from ..database.models import RequestStat
+from ..database.models import Model, RequestStat
 from ..utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -23,6 +24,65 @@ class StatsCollector:
     def __init__(self):
         """初始化统计收集器"""
         self.logger = get_logger(__name__)
+
+    def calculate_cost(
+        self, model_id: str, prompt_tokens: int, completion_tokens: int
+    ) -> Optional[float]:
+        """
+        计算请求费用
+
+        根据模型定价和 token 使用量自动计算费用
+
+        Args:
+            model_id: 模型ID（如 openai/gpt-4）
+            prompt_tokens: 输入 Token 数
+            completion_tokens: 输出 Token 数
+
+        Returns:
+            float: 计算的费用（美元），如果无法计算则返回 None
+        """
+        try:
+            # 查询模型定价信息
+            db = next(get_db())
+            try:
+                model = db.query(Model).filter(Model.id == model_id).first()
+
+                if not model:
+                    self.logger.warning(f"Model not found for cost calculation: {model_id}")
+                    return None
+
+                # 检查是否有定价信息
+                if model.pricing_prompt is None or model.pricing_completion is None:
+                    self.logger.debug(
+                        f"Model {model_id} has no pricing info, cost calculation skipped"
+                    )
+                    return None
+
+                # 计算费用（定价单位为每1K tokens）
+                prompt_cost = (float(prompt_tokens) / 1000.0) * float(model.pricing_prompt)
+                completion_cost = (float(completion_tokens) / 1000.0) * float(
+                    model.pricing_completion
+                )
+                total_cost = prompt_cost + completion_cost
+
+                self.logger.debug(
+                    "Cost calculated",
+                    model=model_id,
+                    prompt_tokens=prompt_tokens,
+                    completion_tokens=completion_tokens,
+                    prompt_cost=prompt_cost,
+                    completion_cost=completion_cost,
+                    total_cost=total_cost,
+                )
+
+                return round(total_cost, 6)  # 保留6位小数
+
+            finally:
+                db.close()
+
+        except Exception as e:
+            self.logger.error(f"Failed to calculate cost: {e}", exc_info=True)
+            return None
 
     async def record_request(
         self,
@@ -46,12 +106,16 @@ class StatsCollector:
           prompt_tokens: 输入Token数
           completion_tokens: 输出Token数
           total_tokens: 总Token数
-          cost: 费用（可选）
+          cost: 费用（可选，如果不提供则自动计算）
 
         Returns:
           bool: 是否成功记录
         """
         try:
+            # 如果没有提供费用，则自动计算
+            if cost is None:
+                cost = self.calculate_cost(model, prompt_tokens, completion_tokens)
+
             # 创建统计记录
             stat = RequestStat(
                 api_key_id=api_key_id,
@@ -114,12 +178,16 @@ class StatsCollector:
           prompt_tokens: 输入Token数
           completion_tokens: 输出Token数
           total_tokens: 总Token数
-          cost: 费用（可选）
+          cost: 费用（可选，如果不提供则自动计算）
 
         Returns:
           bool: 是否成功记录
         """
         try:
+            # 如果没有提供费用，则自动计算
+            if cost is None:
+                cost = self.calculate_cost(model, prompt_tokens, completion_tokens)
+
             # 创建统计记录
             stat = RequestStat(
                 api_key_id=api_key_id,
