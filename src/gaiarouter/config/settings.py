@@ -5,12 +5,13 @@
 """
 
 import os
-from typing import Optional, Dict, Any
 from pathlib import Path
+from typing import Any, Dict, Optional
+
 import yaml
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field, validator
 from dotenv import load_dotenv
+from pydantic import Field, validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # 获取项目根目录（.env 文件所在位置）
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
@@ -21,27 +22,28 @@ if ENV_FILE.exists():
     # 使用 override=True 确保 .env 文件中的值优先
     load_dotenv(ENV_FILE, override=True)
     # 调试：验证关键环境变量是否被加载
-    db_vars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME']
+    db_vars = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME"]
     missing_vars = [var for var in db_vars if not os.getenv(var)]
     if missing_vars:
         import warnings
+
         warnings.warn(
             f".env 文件中缺少以下必需的环境变量: {', '.join(missing_vars)}\n"
             f".env 文件路径: {ENV_FILE}",
-            UserWarning
+            UserWarning,
         )
 else:
     import warnings
+
     warnings.warn(
-        f".env 文件不存在: {ENV_FILE}\n"
-        f"请确保 .env 文件存在于项目根目录，或设置环境变量。",
-        UserWarning
+        f".env 文件不存在: {ENV_FILE}\n" f"请确保 .env 文件存在于项目根目录，或设置环境变量。",
+        UserWarning,
     )
 
 
 class DatabaseSettings(BaseSettings):
     """数据库配置"""
-    
+
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE) if ENV_FILE.exists() else None,
         env_file_encoding="utf-8",
@@ -56,23 +58,26 @@ class DatabaseSettings(BaseSettings):
     user: str = Field(..., description="数据库用户名")  # 自动匹配 DB_USER
     password: str = Field(..., description="数据库密码")  # 自动匹配 DB_PASSWORD
     name: str = Field(..., description="数据库名称")  # 自动匹配 DB_NAME
-    
+
     @property
     def database(self) -> str:
         """数据库名称（兼容性属性）"""
         return self.name
+
     pool_size: int = Field(10, env="DB_POOL_SIZE", description="连接池大小")
     max_overflow: int = Field(20, env="DB_MAX_OVERFLOW", description="最大溢出连接数")
 
     @property
     def database_url(self) -> str:
         """获取数据库连接URL"""
-        return f"mysql+pymysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
+        return (
+            f"mysql+pymysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
+        )
 
 
 class ProviderSettings(BaseSettings):
     """提供商配置"""
-    
+
     class Config:
         env_file = str(ENV_FILE) if ENV_FILE.exists() else None
         env_file_encoding = "utf-8"
@@ -87,7 +92,7 @@ class ProviderSettings(BaseSettings):
 
 class ServerSettings(BaseSettings):
     """服务器配置"""
-    
+
     class Config:
         env_file = str(ENV_FILE) if ENV_FILE.exists() else None
         env_file_encoding = "utf-8"
@@ -102,7 +107,7 @@ class ServerSettings(BaseSettings):
 
 class Settings(BaseSettings):
     """应用配置"""
-    
+
     class Config:
         env_file = str(ENV_FILE) if ENV_FILE.exists() else None
         env_file_encoding = "utf-8"
@@ -113,17 +118,19 @@ class Settings(BaseSettings):
     database: Optional[DatabaseSettings] = None
     providers: Optional[ProviderSettings] = None
     server: Optional[ServerSettings] = None
-    
+
     def __init__(self, **kwargs):
         """初始化，确保嵌套类能正确读取环境变量"""
         # 先调用父类初始化，但不传递嵌套类的数据
-        super().__init__(**{k: v for k, v in kwargs.items() if k not in ['database', 'providers', 'server']})
+        super().__init__(
+            **{k: v for k, v in kwargs.items() if k not in ["database", "providers", "server"]}
+        )
         # 手动创建嵌套类实例，确保它们从环境变量读取（不传递任何 kwargs）
         if self.database is None:
             # 在创建前验证必需的环境变量
             if ENV_FILE.exists():
                 load_dotenv(ENV_FILE, override=True)
-            required_db_vars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME']
+            required_db_vars = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME"]
             missing_vars = [var for var in required_db_vars if not os.getenv(var)]
             if missing_vars:
                 raise ValueError(
@@ -137,9 +144,7 @@ class Settings(BaseSettings):
             self.server = ServerSettings()
 
     # 请求配置
-    request_timeout: int = Field(
-        60, env="REQUEST_TIMEOUT", description="请求超时时间（秒）"
-    )
+    request_timeout: int = Field(60, env="REQUEST_TIMEOUT", description="请求超时时间（秒）")
     max_retries: int = Field(3, env="MAX_RETRIES", description="最大重试次数")
 
 

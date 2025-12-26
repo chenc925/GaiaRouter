@@ -5,33 +5,27 @@ This example demonstrates how to use Server-Sent Events (SSE)
 to receive streaming responses from the GaiaRouter API.
 """
 
-import httpx
-import os
 import json
+import os
+
+import httpx
 
 # Configuration
 API_BASE_URL = "http://localhost:8000"
 API_KEY = os.getenv("GAIAROUTER_API_KEY", "your-api-key-here")
 
+
 def streaming_chat_completion():
     """Make a streaming chat completion request"""
 
     url = f"{API_BASE_URL}/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-    }
+    headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
 
     payload = {
         "model": "openrouter/anthropic/claude-3.5-sonnet",
-        "messages": [
-            {
-                "role": "user",
-                "content": "Write a short poem about AI."
-            }
-        ],
+        "messages": [{"role": "user", "content": "Write a short poem about AI."}],
         "stream": True,
-        "temperature": 0.8
+        "temperature": 0.8,
     }
 
     print("Streaming response:")
@@ -59,6 +53,7 @@ def streaming_chat_completion():
         else:
             print(f"Error: {response.status_code}")
             print(response.text)
+
 
 if __name__ == "__main__":
     streaming_chat_completion()

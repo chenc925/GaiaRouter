@@ -16,10 +16,10 @@ GaiaRouter 统一初始化脚本
     python scripts/init.py --skip-migrations --skip-admin
 """
 
-import sys
-import os
 import argparse
+import os
 import subprocess
+import sys
 from pathlib import Path
 
 # 添加项目根目录到Python路径
@@ -29,15 +29,15 @@ sys.path.insert(0, str(project_root))
 
 def print_header(title):
     """打印标题"""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print(f"  {title}")
-    print("="*60)
+    print("=" * 60)
 
 
 def print_step(step_num, step_name):
     """打印步骤"""
     print(f"\n[{step_num}/4] {step_name}")
-    print("-"*60)
+    print("-" * 60)
 
 
 def check_env_file():
@@ -53,9 +53,10 @@ def check_env_file():
 
     # 检查必需的环境变量
     from dotenv import load_dotenv
+
     load_dotenv(env_file)
 
-    required_vars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME']
+    required_vars = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME"]
     missing_vars = [var for var in required_vars if not os.getenv(var)]
 
     if missing_vars:
@@ -78,7 +79,7 @@ def run_migrations():
             [sys.executable, "-m", "alembic", "upgrade", "head"],
             cwd=project_root,
             capture_output=True,
-            text=True
+            text=True,
         )
 
         if result.returncode != 0:
@@ -90,8 +91,8 @@ def run_migrations():
         print("✓ 数据库迁移完成")
         # 显示迁移输出
         if result.stdout:
-            for line in result.stdout.strip().split('\n'):
-                if 'Running upgrade' in line or 'INFO' in line:
+            for line in result.stdout.strip().split("\n"):
+                if "Running upgrade" in line or "INFO" in line:
                     print(f"  {line}")
         return True
 
@@ -113,10 +114,7 @@ def create_admin_user(username, password):
 
         try:
             user = user_manager.create_user(
-                username=username,
-                password=password,
-                full_name=username,
-                role="admin"
+                username=username, password=password, full_name=username, role="admin"
             )
             print(f"✓ 管理员用户创建成功")
             print(f"  用户ID: {user.id}")
@@ -136,6 +134,7 @@ def create_admin_user(username, password):
     except Exception as e:
         print(f"❌ 创建管理员用户失败: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -145,8 +144,8 @@ async def sync_openrouter_models():
     print("🔄 同步 OpenRouter 模型...")
 
     try:
-        from src.gaiarouter.models.sync import sync_models_from_openrouter
         from src.gaiarouter.config import get_settings
+        from src.gaiarouter.models.sync import sync_models_from_openrouter
 
         settings = get_settings()
 
@@ -163,13 +162,14 @@ async def sync_openrouter_models():
         print(f"  总计: {stats['total']} 个模型")
         print(f"  新增: {stats['created']} 个")
         print(f"  更新: {stats['updated']} 个")
-        if stats['failed'] > 0:
+        if stats["failed"] > 0:
             print(f"  失败: {stats['failed']} 个")
         return True
 
     except Exception as e:
         print(f"❌ 模型同步失败: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -191,34 +191,14 @@ def main():
 
   # 仅创建管理员（跳过迁移）
   python scripts/init.py --skip-migrations
-        """
+        """,
     )
 
-    parser.add_argument(
-        "--admin-username",
-        default="admin",
-        help="管理员用户名 (默认: admin)"
-    )
-    parser.add_argument(
-        "--admin-password",
-        default="admin123",
-        help="管理员密码 (默认: admin123)"
-    )
-    parser.add_argument(
-        "--skip-migrations",
-        action="store_true",
-        help="跳过数据库迁移"
-    )
-    parser.add_argument(
-        "--skip-admin",
-        action="store_true",
-        help="跳过创建管理员用户"
-    )
-    parser.add_argument(
-        "--sync-models",
-        action="store_true",
-        help="同步 OpenRouter 模型列表"
-    )
+    parser.add_argument("--admin-username", default="admin", help="管理员用户名 (默认: admin)")
+    parser.add_argument("--admin-password", default="admin123", help="管理员密码 (默认: admin123)")
+    parser.add_argument("--skip-migrations", action="store_true", help="跳过数据库迁移")
+    parser.add_argument("--skip-admin", action="store_true", help="跳过创建管理员用户")
+    parser.add_argument("--sync-models", action="store_true", help="同步 OpenRouter 模型列表")
 
     args = parser.parse_args()
 
@@ -262,6 +242,7 @@ def main():
     if args.sync_models:
         print_step(4, "同步 OpenRouter 模型")
         import asyncio
+
         if not asyncio.run(sync_openrouter_models()):
             print("\n⚠️  模型同步失败，但初始化已完成")
             print("  你可以稍后在管理后台手动同步模型")

@@ -4,12 +4,14 @@
 处理模型列表查询请求
 """
 
+import time
+
 from fastapi import APIRouter, Depends
-from ..schemas.response import ModelsResponse, ModelInfo
-from ..middleware.auth import verify_api_key
+
 from ...models.manager import get_model_manager
 from ...utils.logger import get_logger
-import time
+from ..middleware.auth import verify_api_key
+from ..schemas.response import ModelInfo, ModelsResponse
 
 logger = get_logger(__name__)
 

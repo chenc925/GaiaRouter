@@ -4,8 +4,9 @@
 管理模型配置和提供商映射
 """
 
-from typing import Dict, Optional, List
 from dataclasses import dataclass
+from typing import Dict, List, Optional
+
 from ..config import get_settings
 from ..utils.logger import get_logger
 

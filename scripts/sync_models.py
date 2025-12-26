@@ -6,23 +6,23 @@
     python scripts/sync_models.py
 """
 
-import sys
 import asyncio
+import sys
 from pathlib import Path
 
 # 添加项目根目录到Python路径
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.gaiarouter.models.sync import sync_models_from_openrouter
 from src.gaiarouter.config import get_settings
+from src.gaiarouter.models.sync import sync_models_from_openrouter
 
 
 async def main():
     """主函数"""
-    print("="*60)
+    print("=" * 60)
     print("OpenRouter 模型同步工具")
-    print("="*60)
+    print("=" * 60)
 
     # 检查配置
     settings = get_settings()
@@ -38,9 +38,9 @@ async def main():
     try:
         stats = await sync_models_from_openrouter()
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("✓ 同步完成！")
-        print("="*60)
+        print("=" * 60)
         print(f"  总模型数: {stats['total']}")
         print(f"  新增: {stats['created']}")
         print(f"  更新: {stats['updated']}")
@@ -50,6 +50,7 @@ async def main():
     except Exception as e:
         print(f"\n❌ 同步失败: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

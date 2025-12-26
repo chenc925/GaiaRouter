@@ -8,17 +8,18 @@
     python scripts/create_admin_user.py --username admin --password admin123
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # 添加项目根目录到Python路径
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+import argparse
+
 from src.gaiarouter.auth.user_manager import get_user_manager
 from src.gaiarouter.database import init_db
-import argparse
 
 
 def main():

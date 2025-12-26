@@ -5,11 +5,13 @@ API Key验证
 """
 
 from typing import Optional
+
 from fastapi import Header, HTTPException, status
-from ...utils.errors import AuthenticationError
-from ...utils.logger import get_logger
+
 from ...auth.api_key_manager import get_api_key_manager
 from ...database.models import APIKey
+from ...utils.errors import AuthenticationError
+from ...utils.logger import get_logger
 
 logger = get_logger(__name__)
 

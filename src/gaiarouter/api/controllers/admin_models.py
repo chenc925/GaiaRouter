@@ -2,15 +2,16 @@
 模型管理控制器（管理后台）
 """
 
-from typing import Optional, List
-from fastapi import APIRouter, Depends, Query, Path, status, HTTPException
+from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 from pydantic import BaseModel
 
-from ..middleware.user_auth import verify_user_token
 from ...database.models import User
-from ...models.sync import sync_models_from_openrouter
 from ...models.manager import get_model_manager
+from ...models.sync import sync_models_from_openrouter
 from ...utils.logger import get_logger
+from ..middleware.user_auth import verify_user_token
 
 logger = get_logger(__name__)
 

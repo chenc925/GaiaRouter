@@ -5,15 +5,14 @@
 """
 
 from .collector import StatsCollector, get_stats_collector
-from .storage import StatsStorage, get_stats_storage
 from .query import StatsQuery, get_stats_query
+from .storage import StatsStorage, get_stats_storage
 
 __all__ = [
-  "StatsCollector",
-  "get_stats_collector",
-  "StatsStorage",
-  "get_stats_storage",
-  "StatsQuery",
-  "get_stats_query",
+    "StatsCollector",
+    "get_stats_collector",
+    "StatsStorage",
+    "get_stats_storage",
+    "StatsQuery",
+    "get_stats_query",
 ]
-

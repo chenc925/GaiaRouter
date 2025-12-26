@@ -5,7 +5,8 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 from ..providers.base import ProviderResponse
 
 

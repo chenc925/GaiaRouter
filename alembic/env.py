@@ -2,12 +2,13 @@
 Alembic环境配置
 """
 
-from logging.config import fileConfig
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from alembic import context
 import sys
+from logging.config import fileConfig
 from pathlib import Path
+
+from sqlalchemy import engine_from_config, pool
+
+from alembic import context
 
 # 添加项目路径
 sys.path.insert(0, str(Path(__file__).parent.parent))

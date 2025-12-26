@@ -4,28 +4,29 @@
 根据模型标识符选择对应的提供商和适配器
 """
 
-from typing import Dict, Any, Tuple, Optional
-from ..router.registry import get_model_registry
-from ..providers import (
-    OpenAIProvider,
-    AnthropicProvider,
-    GoogleProvider,
-    OpenRouterProvider,
-    Provider,
-)
+from typing import Any, Dict, Optional, Tuple
+
 from ..adapters import (
-    OpenAIRequestAdapter,
-    OpenAIResponseAdapter,
     AnthropicRequestAdapter,
     AnthropicResponseAdapter,
     GoogleRequestAdapter,
     GoogleResponseAdapter,
+    OpenAIRequestAdapter,
+    OpenAIResponseAdapter,
     OpenRouterRequestAdapter,
     OpenRouterResponseAdapter,
     RequestAdapter,
     ResponseAdapter,
 )
 from ..config import get_settings
+from ..providers import (
+    AnthropicProvider,
+    GoogleProvider,
+    OpenAIProvider,
+    OpenRouterProvider,
+    Provider,
+)
+from ..router.registry import get_model_registry
 from ..utils.errors import ModelNotFoundError
 from ..utils.logger import get_logger
 

@@ -4,24 +4,25 @@
 处理聊天完成请求（普通模式和流式模式）
 """
 
+import json
+import time
 from typing import AsyncIterator
+
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import StreamingResponse
 from starlette.responses import Response
-import json
-import time
 
-from ..schemas.request import ChatRequest
-from ..schemas.response import ChatResponse
-from ..middleware.auth import verify_api_key
-from ...router import get_model_router
-from ...models.manager import get_model_manager
-from ...utils.errors import ModelNotFoundError
-from ...utils.logger import get_logger
-from ...stats.collector import get_stats_collector
-from ...organizations.limits import get_limit_checker
 from ...database.connection import get_db
 from ...database.models import Organization
+from ...models.manager import get_model_manager
+from ...organizations.limits import get_limit_checker
+from ...router import get_model_router
+from ...stats.collector import get_stats_collector
+from ...utils.errors import ModelNotFoundError
+from ...utils.logger import get_logger
+from ..middleware.auth import verify_api_key
+from ..schemas.request import ChatRequest
+from ..schemas.response import ChatResponse
 
 logger = get_logger(__name__)
 

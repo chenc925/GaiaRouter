@@ -4,12 +4,14 @@
 从 OpenRouter API 同步模型列表到数据库
 """
 
-import httpx
 from datetime import datetime
-from typing import List, Dict, Any, Optional
-from ..database.models import Model
-from ..database.connection import get_db
+from typing import Any, Dict, List, Optional
+
+import httpx
+
 from ..config import get_settings
+from ..database.connection import get_db
+from ..database.models import Model
 from ..utils.logger import get_logger
 
 logger = get_logger(__name__)

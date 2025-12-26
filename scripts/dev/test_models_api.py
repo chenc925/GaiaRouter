@@ -3,8 +3,9 @@
 测试模型管理 API
 """
 
-import requests
 import json
+
+import requests
 
 BASE_URL = "http://localhost:8000"
 

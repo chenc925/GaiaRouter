@@ -5,9 +5,11 @@
 """
 
 from typing import Generator
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import QueuePool
+
 from ..config import get_settings
 
 # 全局数据库引擎和会话工厂

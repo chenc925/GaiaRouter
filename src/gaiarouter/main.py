@@ -5,14 +5,15 @@ FastAPI应用主文件
 """
 
 from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.exceptions import HTTPException
-from .config import get_settings
-from .utils.logger import setup_logger, get_logger
-from .api.middleware.logging import LoggingMiddleware
+
+from .api.controllers import admin_models, api_keys, auth, chat, models, organizations, stats
 from .api.middleware.error import error_handler
-from .api.controllers import chat, models, stats, api_keys, organizations, auth, admin_models
+from .api.middleware.logging import LoggingMiddleware
+from .config import get_settings
+from .utils.logger import get_logger, setup_logger
 
 # 初始化日志
 setup_logger()

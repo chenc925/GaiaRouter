@@ -2,10 +2,12 @@
 OpenRouter提供商实现
 """
 
+from typing import Any, AsyncIterator, Dict, List, Optional
+
 import httpx
-from typing import List, Dict, Any, Optional, AsyncIterator
-from ..utils.errors import TimeoutError, AuthenticationError
+
 from ..config import get_settings
+from ..utils.errors import AuthenticationError, TimeoutError
 from .base import Provider, ProviderResponse
 
 

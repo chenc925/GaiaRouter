@@ -4,21 +4,23 @@
 处理组织的CRUD操作
 """
 
-from typing import Optional
 from datetime import datetime
-from fastapi import APIRouter, Depends, Query, HTTPException, status
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+
+from ...database.models import User
+from ...organizations.manager import get_organization_manager
+from ...utils.errors import AuthenticationError, InvalidRequestError
+from ...utils.logger import get_logger
 from ..middleware.user_auth import verify_user_token
+from ..schemas.api_key import APIKeyResponse, CreateAPIKeyRequest
 from ..schemas.organization import (
     CreateOrganizationRequest,
-    UpdateOrganizationRequest,
-    OrganizationResponse,
     OrganizationListResponse,
+    OrganizationResponse,
+    UpdateOrganizationRequest,
 )
-from ..schemas.api_key import CreateAPIKeyRequest, APIKeyResponse
-from ...organizations.manager import get_organization_manager
-from ...database.models import User
-from ...utils.logger import get_logger
-from ...utils.errors import InvalidRequestError, AuthenticationError
 
 logger = get_logger(__name__)
 

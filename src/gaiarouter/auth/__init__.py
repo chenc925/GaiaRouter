@@ -9,10 +9,9 @@ from .key_storage import KeyStorage, get_key_storage
 from .permission import Permission
 
 __all__ = [
-  "APIKeyManager",
-  "get_api_key_manager",
-  "KeyStorage",
-  "get_key_storage",
-  "Permission",
+    "APIKeyManager",
+    "get_api_key_manager",
+    "KeyStorage",
+    "get_key_storage",
+    "Permission",
 ]
-

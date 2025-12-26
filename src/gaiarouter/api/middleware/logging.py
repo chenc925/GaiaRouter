@@ -5,9 +5,11 @@
 """
 
 import time
+
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
+
 from ...utils.logger import get_logger
 
 logger = get_logger(__name__)
