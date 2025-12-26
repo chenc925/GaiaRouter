@@ -136,7 +136,9 @@ def test_calculate_cost_edge_cases():
         collector = StatsCollector()
 
         # 测试零 tokens
-        cost_zero = collector.calculate_cost(model_id="test/gpt-4", prompt_tokens=0, completion_tokens=0)
+        cost_zero = collector.calculate_cost(
+            model_id="test/gpt-4", prompt_tokens=0, completion_tokens=0
+        )
         print(f"零 tokens 费用: ${cost_zero}")
         if cost_zero == 0.0:
             print("✓ 零 tokens 测试通过")
@@ -144,7 +146,9 @@ def test_calculate_cost_edge_cases():
             print(f"✗ 零 tokens 测试失败 (预期 0.0, 实际 {cost_zero})")
 
         # 测试小数 tokens（实际使用中可能出现）
-        cost_small = collector.calculate_cost(model_id="test/gpt-4", prompt_tokens=100, completion_tokens=50)
+        cost_small = collector.calculate_cost(
+            model_id="test/gpt-4", prompt_tokens=100, completion_tokens=50
+        )
         expected_small = (100 / 1000) * 0.03 + (50 / 1000) * 0.06  # 0.003 + 0.003 = 0.006
         print(f"小量 tokens (100+50) 费用: ${cost_small}")
         if cost_small is not None and abs(cost_small - expected_small) < 0.000001:
