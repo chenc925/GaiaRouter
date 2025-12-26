@@ -106,7 +106,7 @@
         <template #is_enabled="{ record }">
           <a-switch
             :model-value="record.is_enabled"
-            @change="value => handleToggle(record, value)"
+            @change="(value: boolean) => handleToggle(record, value)"
           />
         </template>
 

@@ -95,7 +95,7 @@ const handleSubmit = async () => {
 
     const submitData = {
       organization_id: form.value.organization_id
-    }
+    } as any
 
     if (isEdit.value) {
       await apiKeyStore.updateApiKey(apiKeyId.value, submitData)
