@@ -99,6 +99,7 @@ class TestCreateOrganization:
             monthly_tokens_limit=1000000,
             monthly_cost_limit=100.0,
             created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
 
         with patch(
@@ -150,8 +151,8 @@ class TestListOrganizations:
     async def test_list_organizations_success(self, mock_user):
         """测试成功列出组织"""
         mock_orgs = [
-            Organization(id="org_1", name="Org 1", status="active", created_at=datetime.now()),
-            Organization(id="org_2", name="Org 2", status="active", created_at=datetime.now()),
+            Organization(id="org_1", name="Org 1", status="active", created_at=datetime.now(), updated_at=datetime.now()),
+            Organization(id="org_2", name="Org 2", status="active", created_at=datetime.now(), updated_at=datetime.now()),
         ]
 
         with patch(
@@ -216,7 +217,7 @@ class TestGetOrganization:
     async def test_get_organization_success(self, mock_user):
         """测试成功获取组织"""
         mock_org = Organization(
-            id="org_123", name="Test Org", status="active", created_at=datetime.now()
+            id="org_123", name="Test Org", status="active", created_at=datetime.now(), updated_at=datetime.now()
         )
 
         with patch(
@@ -278,6 +279,7 @@ class TestUpdateOrganization:
             status="inactive",
             monthly_requests_limit=20000,
             created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
 
         with patch(
@@ -378,8 +380,8 @@ class TestGetOrganizationStats:
     async def test_get_organization_stats_success(self, mock_user):
         """测试成功获取组织统计"""
         with (
-            patch("gaiarouter.api.controllers.organizations.get_key_storage") as mock_key_storage,
-            patch("gaiarouter.api.controllers.organizations.get_stats_storage") as mock_stats_storage,
+            patch("gaiarouter.auth.key_storage.get_key_storage") as mock_key_storage,
+            patch("gaiarouter.stats.storage.get_stats_storage") as mock_stats_storage,
         ):
             # Mock key storage
             key_storage_instance = Mock()
@@ -439,8 +441,8 @@ class TestGetOrganizationStats:
     async def test_get_organization_stats_by_model(self, mock_user):
         """测试按模型分组"""
         with (
-            patch("gaiarouter.api.controllers.organizations.get_key_storage") as mock_key_storage,
-            patch("gaiarouter.api.controllers.organizations.get_stats_storage") as mock_stats_storage,
+            patch("gaiarouter.auth.key_storage.get_key_storage") as mock_key_storage,
+            patch("gaiarouter.stats.storage.get_stats_storage") as mock_stats_storage,
         ):
             key_storage_instance = Mock()
             key_storage_instance.list.return_value = ([], 0)

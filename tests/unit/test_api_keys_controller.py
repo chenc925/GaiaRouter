@@ -106,7 +106,7 @@ class TestCreateApiKey:
     async def test_create_api_key_success(self, mock_user, mock_org, create_request):
         """测试成功创建 API Key"""
         with (
-            patch("gaiarouter.api.controllers.api_keys.get_organization_manager") as mock_org_mgr,
+            patch("gaiarouter.organizations.manager.get_organization_manager") as mock_org_mgr,
             patch("gaiarouter.api.controllers.api_keys.get_api_key_manager") as mock_key_mgr,
         ):
             # Mock organization manager
@@ -151,7 +151,7 @@ class TestCreateApiKey:
     @pytest.mark.asyncio
     async def test_create_api_key_org_not_found(self, mock_user, create_request):
         """测试组织不存在"""
-        with patch("gaiarouter.api.controllers.api_keys.get_organization_manager") as mock_org_mgr:
+        with patch("gaiarouter.organizations.manager.get_organization_manager") as mock_org_mgr:
             org_mgr_instance = Mock()
             org_mgr_instance.get_organization.return_value = None
             mock_org_mgr.return_value = org_mgr_instance
@@ -163,7 +163,7 @@ class TestCreateApiKey:
     async def test_create_api_key_already_exists(self, mock_user, mock_org, create_request):
         """测试组织已有 API Key"""
         with (
-            patch("gaiarouter.api.controllers.api_keys.get_organization_manager") as mock_org_mgr,
+            patch("gaiarouter.organizations.manager.get_organization_manager") as mock_org_mgr,
             patch("gaiarouter.api.controllers.api_keys.get_api_key_manager") as mock_key_mgr,
         ):
             org_mgr_instance = Mock()
@@ -208,7 +208,7 @@ class TestListApiKeys:
 
         with (
             patch("gaiarouter.api.controllers.api_keys.get_api_key_manager") as mock_key_mgr,
-            patch("gaiarouter.api.controllers.api_keys.get_organization_manager") as mock_org_mgr,
+            patch("gaiarouter.organizations.manager.get_organization_manager") as mock_org_mgr,
         ):
             key_mgr_instance = Mock()
             key_mgr_instance.list_keys.return_value = (mock_keys, 2)
@@ -256,7 +256,7 @@ class TestListApiKeys:
         """测试分页"""
         with (
             patch("gaiarouter.api.controllers.api_keys.get_api_key_manager") as mock_key_mgr,
-            patch("gaiarouter.api.controllers.api_keys.get_organization_manager") as mock_org_mgr,
+            patch("gaiarouter.organizations.manager.get_organization_manager") as mock_org_mgr,
         ):
             key_mgr_instance = Mock()
             key_mgr_instance.list_keys.return_value = ([], 25)
