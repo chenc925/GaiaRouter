@@ -174,9 +174,9 @@ async def list_api_keys(
             if org:
                 org_map[org_id] = org.name
 
-        # 转换为响应模型
+        # 转换为响应模型（不包含 key 字段，安全考虑）
         data = [
-            _api_key_to_response(k, organization_name=org_map.get(k.organization_id)) for k in keys
+            _api_key_to_response(k, include_key=False, organization_name=org_map.get(k.organization_id)) for k in keys
         ]
 
         # 计算总页数
@@ -218,7 +218,8 @@ async def get_api_key(key_id: str, user: User = Depends(verify_user_token)) -> A
         # 非admin用户只能查看自己组织的API Key（如果需要的话，可以进一步限制）
         # 这里简化处理，登录用户都可以查看
 
-        return _api_key_to_response(key)
+        # 查询时不返回 key 字段（安全考虑）
+        return _api_key_to_response(key, include_key=False)
 
     except (AuthenticationError, HTTPException):
         raise
