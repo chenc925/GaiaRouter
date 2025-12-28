@@ -39,47 +39,47 @@ class TestAPIStructure:
 class TestChatEndpointValidation:
     """测试聊天端点的请求验证"""
 
-    @pytest.mark.xfail(reason="Complex FastAPI error handling - needs refactoring")
-    def test_chat_completion_missing_auth(self):
+    def test_chat_completion_missing_auth(self, test_client_for_no_auth):
         """测试缺少认证"""
-        client = TestClient(app)
-        response = client.post(
+        response = test_client_for_no_auth.post(
             "/v1/chat/completions",
             json={
                 "model": "openai/gpt-4",
                 "messages": [{"role": "user", "content": "Hello!"}],
             },
         )
-        # Should require authentication
-        assert response.status_code in [401, 422]
+        # Should require authentication - expect 401
+        assert response.status_code == 401
+        data = response.json()
+        # Response format: {"error": {"code": ..., "message": ..., "type": ...}}
+        assert "error" in data or "detail" in data
 
-    @pytest.mark.xfail(reason="Complex FastAPI error handling - needs refactoring")
-    def test_chat_completion_invalid_request_missing_model(self):
+    def test_chat_completion_invalid_request_missing_model(self, test_client_with_auth):
         """测试缺少必需字段 - model"""
-        client = TestClient(app)
-        response = client.post(
+        response = test_client_with_auth.post(
             "/v1/chat/completions",
             json={"messages": [{"role": "user", "content": "Hello!"}]},
             headers={"Authorization": "Bearer test-key"},
         )
         assert response.status_code == 422  # Validation error
+        data = response.json()
+        # Response format: {"error": {"code": ..., "message": ..., "type": ...}}
+        assert "error" in data or "detail" in data
 
-    @pytest.mark.xfail(reason="Complex FastAPI error handling - needs refactoring")
-    def test_chat_completion_invalid_request_missing_messages(self):
+    def test_chat_completion_invalid_request_missing_messages(self, test_client_with_auth):
         """测试缺少必需字段 - messages"""
-        client = TestClient(app)
-        response = client.post(
+        response = test_client_with_auth.post(
             "/v1/chat/completions",
             json={"model": "openai/gpt-4"},
             headers={"Authorization": "Bearer test-key"},
         )
         assert response.status_code == 422  # Validation error
+        data = response.json()
+        assert "error" in data or "detail" in data
 
-    @pytest.mark.xfail(reason="Complex FastAPI error handling - needs refactoring")
-    def test_chat_completion_invalid_message_format(self):
+    def test_chat_completion_invalid_message_format(self, test_client_with_auth):
         """测试无效的消息格式"""
-        client = TestClient(app)
-        response = client.post(
+        response = test_client_with_auth.post(
             "/v1/chat/completions",
             json={
                 "model": "openai/gpt-4",
@@ -88,17 +88,20 @@ class TestChatEndpointValidation:
             headers={"Authorization": "Bearer test-key"},
         )
         assert response.status_code == 422
+        data = response.json()
+        assert "error" in data or "detail" in data
 
 
 class TestModelsEndpointValidation:
     """测试模型列表端点"""
 
-    @pytest.mark.xfail(reason="Complex FastAPI error handling - needs refactoring")
-    def test_list_models_missing_auth(self):
+    def test_list_models_missing_auth(self, test_client_for_no_auth):
         """测试缺少认证"""
-        client = TestClient(app)
-        response = client.get("/v1/models")
-        assert response.status_code in [401, 422]
+        response = test_client_for_no_auth.get("/v1/models")
+        assert response.status_code == 401
+        data = response.json()
+        # Response format: {"error": {"code": ..., "message": ..., "type": ...}}
+        assert "error" in data or "detail" in data
 
 
 class TestAuthEndpoint:
@@ -110,7 +113,6 @@ class TestAuthEndpoint:
         yield
         app.dependency_overrides = {}
 
-    @pytest.mark.xfail(reason="Dependency override issue - needs investigation")
     def test_login_success(self):
         """测试成功登录"""
         from gaiarouter.api.controllers.auth import get_token_manager, get_user_manager

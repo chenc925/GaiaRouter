@@ -33,18 +33,23 @@ class LoginResponse(BaseModel):
 
 
 @router.post("/login", response_model=LoginResponse)
-async def login(request: LoginRequest):
+async def login(
+    request: LoginRequest,
+    user_manager=Depends(get_user_manager),
+    token_manager=Depends(get_token_manager),
+):
     """
     用户登录
 
     Args:
       request: 登录请求（用户名和密码）
+      user_manager: 用户管理器（依赖注入）
+      token_manager: Token 管理器（依赖注入）
 
     Returns:
       LoginResponse: 登录响应（包含JWT token）
     """
     try:
-        user_manager = get_user_manager()
         user = user_manager.verify_user(request.username, request.password)
 
         if not user:
@@ -53,7 +58,6 @@ async def login(request: LoginRequest):
             )
 
         # 生成JWT token
-        token_manager = get_token_manager()
         token = token_manager.generate_token(
             user_id=user.id, username=user.username, role=user.role
         )
